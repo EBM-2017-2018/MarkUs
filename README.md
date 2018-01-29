@@ -26,6 +26,5 @@ Il comprend :
 6. TODO: Autoriser Travis, Codecov et CodeClimate à accéder au dépôt
 =======
 # MarkUs
->>>>>>> 1fc35808b2cb0d846be16d0b026355f6355c1381
-Salut
+
 Cissé
