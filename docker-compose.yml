@@ -1,0 +1,21 @@
+version: "3"
+services:
+  web:
+    image: ebm1718travis/markus:latest
+    depends_on:
+       - mongodb
+    environment:
+      - MONGODB_URI=mongodb://mongodb/markus
+    networks:
+      local:
+      ebm-filrouge:
+        aliases:
+          - markus
+  mongodb:
+     image: mongo
+     networks:
+       - local
+networks:
+  local:
+  ebm-filrouge:
+    external: true 
