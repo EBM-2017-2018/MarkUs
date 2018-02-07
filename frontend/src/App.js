@@ -11,7 +11,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to MarkUs powered by EBM</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          Louis est un amoureux des clics et de Wordpress <3
         </p>
       </div>
     );
