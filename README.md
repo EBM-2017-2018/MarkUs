@@ -1,5 +1,8 @@
-
-EBM Boilerplate
+# MarkUs
+Cissé
+Louis
+Carl
+Nathan
 ===============
 
 [![Build Status](https://travis-ci.org/EBM-2017-2018/EBM-boilerplate.svg?branch=master)](https://travis-ci.org/EBM-2017-2018/EBM-boilerplate)
@@ -23,15 +26,6 @@ Il comprend :
 3. Récupérer l'URL du projet, accessible depuis le bouton "Clone or download"
 4. `git remote add upstream https://github.com/EBM-2017-2018/EBM-boilerplate.git`
 5. `git remote set-url origin <adresse de votre dépôt récupérée à l'étape 3>` (exemple : `git remote set-url origin https://github.com/EBM-2017-2018/OKLM.git`)
-<<<<<<< HEAD
-6. TODO: Autoriser Travis, Codecov et CodeClimate à accéder au dépôt
-
-# MarkUs
-Cissé
-Louis
-Carl
-Nathan
-
 6. Aller sur https://travis-ci.org/, se connecter avec son compte Github, et dans l'organisation EBM-2017-2018, activer Travis pour votre projet Github.
 7. Générer un token Github pour l'APIDoc : Aller ici : https://github.com/settings/tokens, cliquer sur "Generate new token" et cocher le bloc "repo". Choisissez un nom pour le token et cliquez sur "Generate token". Copiez en le token qui s'affiche.
 8. Retourner sur https://travis-ci.org/, dans la liste à gauche, le projet devrait apparaître. Cliquer dessus pour l'ouvrir et dans le menu "More Options" à droite, aller sur Settings. Dans la page qui s'affiche, dans la section "Environment Variables", ajouter une nouvelle ligne avec comme nom `GITHUB_TOKEN` et comme valeur le token précédemment généré, en laissant le booléen à Off.
@@ -151,3 +145,4 @@ Une fois que tout ça est fait, mets tout ça sur master sans trop réfléchir, 
 Si ce n'est pas le cas, et qu'au bout de longues minutes d'attente il ne se passe toujours rien, appelle-nous. On pleurera avec toi.
 
 **A noter :** le déploiement s'effectue AUTOMATIQUEMENT (eh ouais !) à chaque push ou fusion de pull request sur la branche master.
+
