@@ -1,5 +1,10 @@
+html{
+  background-color: #F5F0F6;
+
+}
 .App {
   text-align: center;
+
 }
 
 .App-logo {
@@ -8,10 +13,13 @@
 }
 
 .App-header {
-  background-color: #F5F0F6;
-  height: 150px;
+  background-color:#385F71;
+  /* background-color: #F5F0F6; */
+  height: 120px;
   padding: 20px;
-  color: #18435A;
+  color: #fff;
+  font-family: Roboto-Thin;
+  src: url("Roboto-Thin.ttf");
 }
 
 .App-title {
