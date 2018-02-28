@@ -1,17 +1,25 @@
+html{
+  background-color: #F5F0F6;
+
+}
 .App {
   text-align: center;
+
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  /* animation: App-logo-spin infinite 20s linear; */
   height: 80px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background-color:#385F71;
+  /* background-color: #F5F0F6; */
+  height: 120px;
   padding: 20px;
-  color: white;
+  color: #fff;
+  font-family: Roboto-Thin;
+  src: url("Roboto-Thin.ttf");
 }
 
 .App-title {
