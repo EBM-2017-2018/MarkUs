@@ -1,6 +1,10 @@
 const { Router } = require('express');
+const mongoose= require('mongoose');
 
 const router = new Router();
+
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI);
 
 /**
  * @api {get} / Hello World
@@ -23,12 +27,14 @@ router.get('/', (req, res) => res.send('Hello, World!'));
  *
  * @apiParam  {String} name Nom de la personne à saluer
  * @apiParamExample  {String} Request-Example:
-     name: Nymous
+ name: Nymous
  *
  * @apiSuccessExample {html} Success-Response:
-     HTTP/1.1 200 OK
-     Hello, Nymous!
+ HTTP/1.1 200 OK
+ Hello, Nymous!
  */
-router.get('/:name', (req, res) => res.send(`Hello, ${req.params.name}!`));
+//router.get('/:name', (req, res) => res.send(`Hello, ${req.params.name}!`));
+
+router.use('/evaluations', require('./evaluations'));
 
 module.exports = router;
