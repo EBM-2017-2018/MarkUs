@@ -3,9 +3,13 @@ const path = require('path');
 const express = require('express');
 const serveStatic = require('serve-static');
 const config = require('./config');
+const bodyParser = require('body-parser');
 
 const app = express();
-const server = require('http').Server(app);
+const server = require('http')
+  .Server(app);
+
+app.use(bodyParser.json());
 
 app.use('/api', require('./api'));
 
@@ -16,6 +20,9 @@ app.get('/*', (req, res) => {
 });
 
 server.listen(config.app.port, (err) => {
-  if (err) console.error(err);
-  else console.log(`Listening on port ${config.app.port}`);
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(`Listening on port ${config.app.port}`);
+  }
 });
