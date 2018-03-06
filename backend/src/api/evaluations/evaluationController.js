@@ -7,7 +7,7 @@ module.exports.findAll = (req, res) => {
     if (err) {
       return res.send(err);
     }
-    res.json(evaluations);
+    return res.json(evaluations);
   });
 };
 
@@ -18,8 +18,8 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      res.json(evaluation);
-    }
+      return res.json(evaluation);
+    },
   );
 };
 
@@ -29,7 +29,7 @@ module.exports.create = (req, res) => {
     if (err) {
       return res.json(err);
     }
-    res.json(evaluation);
+    return res.json(evaluation);
   });
 };
 
@@ -42,7 +42,7 @@ module.exports.delete = (req, res) => {
         return res.json(err);
       }
 
-      res.json({ message: 'evaluation supprimée' });
-    }
+      return res.json({ message: 'evaluation supprimée' });
+    },
   );
 };
