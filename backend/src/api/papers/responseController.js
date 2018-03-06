@@ -18,28 +18,27 @@ module.exports.findOne = (req, res) => {
   Paper.findOne(
     {
       _id: req.params.id,
-      'responses._id': req.params.qid,
+      'responses._id': req.params.rid,
     },
-    { 'questions.$': true },
-    (err, evaluation) => {
+    { 'responses.$': true },
+    (err, paper) => {
       if (err) {
         return res.send(err);
       }
-      return res.json(evaluation.questions[0]);
+      return res.json(paper.responses[0]);
     },
   );
 };
 
-module.exports.upcreate = (req, res) => {
-  const { content, points, format } = req.body;
+module.exports.create = (req, res) => {
+  const { content, questionId } = req.body;
   Paper.findOneAndUpdate()(
     { _id: req.params.id },
     {
       $push: {
-        questions: {
+        responses: {
           content,
-          points,
-          format,
+          questionId,
         },
       },
     },
@@ -50,9 +49,30 @@ module.exports.upcreate = (req, res) => {
       }
       return res.json({
         content,
-        points,
-        format,
+        questionId,
       });
+    },
+  );
+};
+
+module.exports.update = (req, res) => {
+  const { content } = req.body;
+  Paper.update(
+    {
+      _id: req.params.id,
+      'responses._id': req.params.rid,
+    },
+    {
+      $set: {
+        'responses.$.content': content,
+      },
+    },
+    { multi: true },
+    (err) => {
+      if (err) {
+        return res.json(err);
+      }
+      return res.end();
     },
   );
 };
@@ -63,7 +83,7 @@ module.exports.delete = (req, res) => {
     { _id: req.params.id },
     {
       $pull: {
-        messages: { _id: req.params.mid },
+        responses: { _id: req.params.rid },
       },
     },
     (err) => {
@@ -71,7 +91,7 @@ module.exports.delete = (req, res) => {
         return res.json(err);
       }
 
-      return res.json({ message: 'question supprimée' });
+      return res.json({ message: 'réponse supprimée' });
     },
   );
 };

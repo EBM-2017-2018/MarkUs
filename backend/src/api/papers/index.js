@@ -12,7 +12,8 @@ router.delete('/:id', paperController.delete);
 
 router.get('/:id/responses', responseController.findAll);
 router.get('/:id/responses/:rid', responseController.findOne);
-router.post('/:id/responses', responseController.upcreate);
+router.post('/:id/responses', responseController.create);
+router.put('/:id/responses', responseController.update);
 router.delete('/:id/responses/:rid', responseController.delete);
 
 module.exports = router;
