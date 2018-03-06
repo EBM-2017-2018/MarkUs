@@ -10,10 +10,9 @@ router.get('/:id', paperController.findOne);
 router.post('/', paperController.create);
 router.delete('/:id', paperController.delete);
 
-router.get('/:id/questions', responseController.findAll);
-router.get('/:id/questions/:qid', responseController.findOne);
-router.post('/:id/questions', responseController.create);
-router.delete('/:id/questions/:qid', responseController.delete);
-
+router.get('/:id/responses', responseController.findAll);
+router.get('/:id/responses/:rid', responseController.findOne);
+router.post('/:id/responses', responseController.upcreate);
+router.delete('/:id/responses/:rid', responseController.delete);
 
 module.exports = router;
