@@ -29,8 +29,15 @@ class Content extends PureComponent {
       <div className={this.props.className}>
           <img src={logo} className={classes.logo} alt="logo" />
         <Typography variant="headline">Welcome to MarkUs</Typography>
-        <Typography variant="subheading">powered by EBM</Typography>
+        <br />
+        <br />
+        <Typography variant="headline" component="h1">Créer une évaluation</Typography>
+        <br />
+        <br />
         <FormEvaluation/>
+        <br />
+        <br />
+        <Typography variant="headline" component="h1">Les Evaluations</Typography>
         <ListEvaluation/>
       </div>
     )

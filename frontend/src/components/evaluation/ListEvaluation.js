@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Typography, Paper, withStyles} from 'material-ui';
+import {Typography, Paper, Button, withStyles} from 'material-ui';
 
 const styles = {};
 
@@ -36,6 +36,9 @@ class ListEvaluation extends PureComponent {
               <Paper elevation={4}>
                 <Typography variant="headline" component="h1">
                   {evaluation.name}
+                  <Button variant="raised" color="primary">
+                    + 
+                  </Button>
                 </Typography>
                 <Typography component="p">
                   {evaluation.date}

@@ -41,17 +41,12 @@ class FormEvaluation extends PureComponent {
 
   render() {
     return (
-      <div>
-        <Typography variant="headline" component="h1">
-          Créer une évaluation
-        </Typography>
         <form onSubmit={this.handleSubmit}>
           <TextField name="name" label="Titre de l'évaluation" value={this.state.name} onChange={this.handleNameChange}/>
           <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
             Créer
           </Button>
         </form>
-      </div>
     );
   }
 }
