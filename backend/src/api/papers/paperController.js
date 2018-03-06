@@ -1,41 +1,50 @@
-const Evaluation = require('./evaluationModel');
+const Paper = require('./paperModel');
 
 module.exports = {};
 
 module.exports.findAll = (req, res) => {
-  Evaluation.find({}, (err, evaluations) => {
+  Paper.find({}, (err, papers) => {
     if (err) {
       return res.send(err);
     }
-    return res.json(evaluations);
+    return res.json(papers);
+  });
+};
+
+module.exports.findAllByEvaluation = (req, res) => {
+  Paper.find({ evaluationId: req.param.id }, (err, papers) => {
+    if (err) {
+      return res.send(err);
+    }
+    return res.json(papers);
   });
 };
 
 module.exports.findOne = (req, res) => {
-  Evaluation.findOne(
+  Paper.findOne(
     { _id: req.params.id },
-    (err, evaluation) => {
+    (err, paper) => {
       if (err) {
         return res.send(err);
       }
-      return res.json(evaluation);
+      return res.json(paper);
     },
   );
 };
 
 module.exports.create = (req, res) => {
-  const evaluation = new Evaluation(req.body);
-  evaluation.save((err) => {
+  const paper = new Paper(req.body);
+  paper.save((err) => {
     if (err) {
       return res.json(err);
     }
-    return res.json(evaluation);
+    return res.json(paper);
   });
 };
 
 
 module.exports.delete = (req, res) => {
-  Evaluation.deleteOne(
+  Paper.deleteOne(
     { _id: req.params.id },
     (err) => {
       if (err) {
