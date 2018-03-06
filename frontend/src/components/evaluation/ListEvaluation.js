@@ -37,7 +37,7 @@ class ListEvaluation extends PureComponent {
                 <Typography variant="headline" component="h1">
                   {evaluation.name}
                   <Button variant="raised" color="primary">
-                    + 
+                    +
                   </Button>
                 </Typography>
                 <Typography component="p">
