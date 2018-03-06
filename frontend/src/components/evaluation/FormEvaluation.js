@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {TextField, Button, Typography, withStyles} from 'material-ui';
+import {TextField, Button, withStyles} from 'material-ui';
 
 const styles = {};
 
