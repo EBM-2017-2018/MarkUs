@@ -36,5 +36,6 @@ mongoose.connect(process.env.MONGODB_URI);
 // router.get('/:name', (req, res) => res.send(`Hello, ${req.params.name}!`));
 
 router.use('/evaluations', require('./evaluations'));
+router.use('/papers', require('./papers'));
 
 module.exports = router;

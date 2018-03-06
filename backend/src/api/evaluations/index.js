@@ -4,6 +4,8 @@ const router = new Router();
 
 const evaluationController = require('./evaluationController');
 const questionController = require('./questionController');
+const paperController = require('../papers/paperController');
+const responseController = require('../papers/responseController');
 
 router.get('/', evaluationController.findAll);
 router.get('/:id', evaluationController.findOne);
@@ -14,6 +16,10 @@ router.get('/:id/questions', questionController.findAll);
 router.get('/:id/questions/:qid', questionController.findOne);
 router.post('/:id/questions', questionController.create);
 router.delete('/:id/questions/:qid', questionController.delete);
+
+router.get('/:id/papers', paperController.findAllByEvaluation);
+
+router.get('/:id/questions/:qid/responses', responseController.findAllByQuestion);
 
 
 module.exports = router;
