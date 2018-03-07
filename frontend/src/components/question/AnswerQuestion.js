@@ -17,7 +17,9 @@ class AnswerQuestion extends PureComponent {
       date: '',
       id : '',
       name: '',
-      questions: []
+      questions: [],
+      responses:[],
+      author: 'autheur Par defaut'
     };
   }
 
@@ -39,8 +41,18 @@ class AnswerQuestion extends PureComponent {
       })
   }
 
-  handleSubmit(){
 
+  handleNameChange(index, question_id) {
+    return (event) => {
+      const value = event.target.value
+      this.setState(state => {
+        const responses = state.responses.slice();
+        console.log('e', value)
+        responses[index] = {content: value, questionId: question_id}
+        return {responses}
+      })
+      console.log(this.state.responses)
+    }
   }
 
   render() {
@@ -52,7 +64,7 @@ class AnswerQuestion extends PureComponent {
               <Typography component="p">
                 {question.content} ? - {question.points} points
               </Typography>
-              <TextField name="content"/>
+              <TextField name="content" onChange={this.handleNameChange(index, question._id)}/>
             </div>
           )
         })}
