@@ -7,7 +7,7 @@ const questionController = require('./questionController');
 const paperController = require('../papers/paperController');
 
 /**
- * @api {get} /evaluations Récupère la liste de toutes les évaluations
+ * @api {get} /evaluations Récupèrer la liste de toutes les évaluations
  * @apiName GetEvaluations
  * @apiGroup Evaluations
  * @apiDescription Cette URL renvoit un objet au format JSON contenant
@@ -32,9 +32,29 @@ const paperController = require('../papers/paperController');
  ]
  */
 router.get('/', evaluationController.findAll);
+/**
+ * @api {get} /evaluations/:id Récupèrer une évaluation par Id
+ * @apiName GetEvaluationById
+ * @apiGroup Evaluations
+ * @apiDescription Cette URL renvoit un objet au format JSON correspondant à l'évaluation demandée
+ *
+ * @apiParam  {String} id   ID de l'évaluation à afficher
+ * @apiParamExample  {String}  Request-Example:
+ *    id: 5aa00cbddfc165256122dccc
+ *
+ * @apiSuccessExample {html} Success-Response:
+ * {
+    "date": "2018-03-07T16:01:01.994Z",
+    "questions": [],
+    "_id": "5aa00cbddfc165256122dccc",
+    "name": "Une évaluation particulière",
+    "groupClass": "Un ensemble d'étudiant",
+    "__v": 0
+  }
+ */
 router.get('/:id', evaluationController.findOne);
 /**
- * @api {post} /evaluations Crée une nouvelle évaluation
+ * @api {post} /evaluations Créer une nouvelle évaluation
  * @apiName PostEvaluation
  * @apiGroup Evaluations
  * @apiDescription Crée une nouvelle évaluation dans la base de donnée.
