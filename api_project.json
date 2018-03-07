@@ -1,15 +1,15 @@
 {
-  "title": "ApiDoc pour le projet Boilerplate",
+  "title": "ApiDoc pour le projet MarkUs",
   "url": "/api",
   "sampleUrl": "http://localhost:4000/api",
-  "name": "boilerplate-backend",
+  "name": "MarkUs_API",
   "version": "0.1.0",
   "description": "",
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-03-07T13:34:57.478Z",
+    "time": "2018-03-07T13:41:11.628Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
