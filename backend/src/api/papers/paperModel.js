@@ -24,7 +24,7 @@ const PaperSchema = new Schema({
     default: Date.now,
   },
   author: {
-    type: String,
+    type: String, // TODO
     required: true,
   },
   responses: [ResponseSchema],

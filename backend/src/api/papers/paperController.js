@@ -32,6 +32,28 @@ module.exports.findOne = (req, res) => {
   );
 };
 
+module.exports.update = (req, res) => {
+  const { responses, corrected } = req.body;
+  Paper.update(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: {
+        responses,
+        corrected,
+      },
+    },
+    { multi: true },
+    (err) => {
+      if (err) {
+        return res.json(err);
+      }
+      return res.end();
+    },
+  );
+};
+
 module.exports.create = (req, res) => {
   const paper = new Paper(req.body);
   paper.save((err) => {
