@@ -6,6 +6,7 @@ import {AppBar, IconButton, Toolbar, Tooltip, Typography, withStyles} from 'mate
 import {Apps as AppsIcon} from 'material-ui-icons';
 
 import AppsMenu from './AppsMenu';
+import {Link} from 'react-router-dom';
 
 const styles = {
   appBarWithTabBar: {
@@ -56,7 +57,7 @@ class GlobalAppBar extends PureComponent {
       <AppBar position="absolute" className={appBarClasses}>
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            {this.props.appTitle}
+            <Link to="/">{this.props.appTitle}</Link>
           </Typography>
           <Tooltip id="apps-icon" title="Applications">
             <IconButton

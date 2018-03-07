@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {TextField, Button, withStyles} from 'material-ui';
+import {Typography, TextField, Button, withStyles} from 'material-ui';
+
+import ListQuestion from './ListQuestion';
 
 const styles = {};
 
@@ -23,7 +25,7 @@ class FormEvaluation extends PureComponent {
 
   handleSubmit(event) {
     event.preventDefault();
-    const URL = `/api/evaluations/${this.props.evaluation_id}/questions`;
+    const URL = `/api/evaluations/${this.props.match.params.evaluation_id}/questions`;
     fetch(
       URL,
       {
@@ -48,6 +50,8 @@ class FormEvaluation extends PureComponent {
 
   render() {
     return (
+      <div>
+        <Typography variant="headline">Ajoutez des questions à l'évaluation</Typography>
         <form onSubmit={this.handleSubmit}>
           <TextField name="content" label="Question" value={this.state.content} onChange={this.handleContentChange}/>
           <TextField name="points" type="number" label="Nb de points" value={this.state.points} onChange={this.handlePointsChange}/>
@@ -55,6 +59,8 @@ class FormEvaluation extends PureComponent {
             Créer
           </Button>
         </form>
+        <ListQuestion evaluation_id={this.props.match.params.evaluation_id}/>
+      </div>
     );
   }
 }

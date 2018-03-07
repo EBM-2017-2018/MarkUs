@@ -1,10 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Typography, Button, Paper, withStyles} from 'material-ui';
+import {withStyles} from 'material-ui';
 
-
-import ListQuestion from '../question/ListQuestion'
-import FormQuestion from '../question/FormQuestion'
+import Evaluation from './Evaluation';
 
 const styles = {};
 
@@ -23,6 +21,9 @@ class ListEvaluation extends PureComponent {
   componentWillMount(){
     this.fetchEvalutation();
   }
+  componentWillUpdate(){
+    this.fetchEvalutation();
+  }
 
   fetchEvalutation() {
     const URL = '/api/evaluations';
@@ -33,38 +34,14 @@ class ListEvaluation extends PureComponent {
       })
   }
 
-  handleDeleteEvaluation (evaluation_id) {
-    return () => {
-      const URL = `/api/evaluations/${evaluation_id}`;
-      fetch(
-        URL,
-        {
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            method: "DELETE",
-        })
-    }
-  }
-
   render() {
     return this.state.evaluations.map((evaluation) => {
-            return(
-              <div key={evaluation._id}>
-                <Paper elevation={4}>
-                  <Typography variant="headline" component="h1">
-                    {evaluation.name}
-                    <Button onClick={this.handleDeleteEvaluation(evaluation._id)}>
-                     Supprimer
-                    </Button>
-                  </Typography>
-                  <ListQuestion questions={evaluation.questions} />
-                  <FormQuestion evaluation_id={evaluation._id} />
-                </Paper>
-              </div>
-            )
-        })
+          return(
+            <div key={evaluation._id}>
+              <Evaluation evaluation={evaluation}/>
+            </div>
+          )
+      })
     }
 }
 export default withStyles(styles)(ListEvaluation);

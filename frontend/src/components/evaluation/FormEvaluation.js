@@ -33,6 +33,9 @@ class FormEvaluation extends PureComponent {
           method: "POST",
           body: JSON.stringify({name: this.state.name})
       })
+      .then(() => {
+        this.setState({name: ''})
+      })
   }
 
   handleNameChange(event) {
