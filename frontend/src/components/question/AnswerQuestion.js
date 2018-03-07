@@ -18,7 +18,7 @@ class AnswerQuestion extends PureComponent {
     this.state = {
       date: '',
       evaluation_id : '',
-      paper_id : '',
+      copy_id : '',
       name: '',
       questions: [],
       responses:[],
@@ -31,14 +31,18 @@ class AnswerQuestion extends PureComponent {
     console.log("e", evaluation)
     this.setState({
       date: evaluation.date,
-      paper_id : '',
+      copy_id : '',
       evaluation_id : evaluation.id,
       name: evaluation.name,
       questions: evaluation.questions
     })
     createCopy(evaluation, this.state.author)
+      .then(response => {
+        this.setState({
+          copy_id: response._id
+        })
+      })
   }
-
 
   handleNameChange(index, question_id) {
     return (event) => {
@@ -51,6 +55,11 @@ class AnswerQuestion extends PureComponent {
       })
       console.log(this.state.responses)
     }
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    updateCopy(this.state.copy_id, this.state.responses);
   }
 
   render() {

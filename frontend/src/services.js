@@ -52,21 +52,6 @@ export const createQuestion = (evaluationId, content, points) => {
     }).then(res => res.json())
 }
 
-export const updateCopy = (responses) => {
-  return fetch(
-    `${BASE_URL}/papers`,
-    {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "UPDATE",
-        body: JSON.stringify({
-          responses: responses,
-        })
-    })
-}
-
 export const deleteEvaluation = (evaluationId) => {
   return fetch(
     `${BASE_URL}/evaluations/${evaluationId}`,
@@ -76,5 +61,20 @@ export const deleteEvaluation = (evaluationId) => {
           'Content-Type': 'application/json'
         },
         method: "DELETE",
+    })
+}
+
+export const updateCopy = (id, responses) => {
+  return fetch(
+    `${BASE_URL}/papers/${id}`,
+    {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          responses: responses,
+        })
     })
 }
