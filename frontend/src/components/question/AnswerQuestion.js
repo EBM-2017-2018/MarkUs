@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {TextField, Button, Typography, withStyles} from 'material-ui';
 
+import {createCopy, getEvaluation, updateCopy} from '../../services'
+
 
 const styles = {};
 
@@ -15,30 +17,26 @@ class AnswerQuestion extends PureComponent {
     super(props);
     this.state = {
       date: '',
-      id : '',
+      evaluation_id : '',
+      paper_id : '',
       name: '',
       questions: [],
       responses:[],
-      author: 'autheur Par defaut'
+      author: 'auteur Par defaut'
     };
   }
 
-  componentWillMount(){
-    this.fetchEvalutation();
-  }
-
-  fetchEvalutation() {
-    const URL = `/api/evaluations/${this.props.match.params.evaluation_id}`;
-    fetch(URL)
-      .then((response) => { return response.json(); })
-      .then((evaluations) => {
-        this.setState({
-          date: evaluations.date,
-          id : evaluations.id,
-          name: evaluations.name,
-          questions: evaluations.questions
-        })
-      })
+  async componentDidMount(){
+    const evaluation = await getEvaluation(this.props.match.params.evaluation_id)
+    console.log("e", evaluation)
+    this.setState({
+      date: evaluation.date,
+      paper_id : '',
+      evaluation_id : evaluation.id,
+      name: evaluation.name,
+      questions: evaluation.questions
+    })
+    createCopy(evaluation, this.state.author)
   }
 
 

@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {TextField, Button, withStyles} from 'material-ui';
 
+import {createEvaluation} from '../../services'
+
 const styles = {};
 
 class FormEvaluation extends PureComponent {
@@ -21,18 +23,7 @@ class FormEvaluation extends PureComponent {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state.name)
-    const URL = '/api/evaluations';
-    fetch(
-      URL,
-      {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({name: this.state.name})
-      })
+    createEvaluation(this.state.name)
       .then(() => {
         this.setState({name: ''})
       })

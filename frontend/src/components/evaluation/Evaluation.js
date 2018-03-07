@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
 import {Typography, Button, Paper, withStyles} from 'material-ui';
 
+import {deleteEvaluation} from '../../services'
+
 import {Link} from 'react-router-dom';
 
 const styles = {};
@@ -17,18 +19,9 @@ class Evaluation extends PureComponent {
     };
   }
 
-  handleDeleteEvaluation (evaluation_id) {
+  handleDeleteEvaluation (evaluationId) {
     return () => {
-      const URL = `/api/evaluations/${evaluation_id}`;
-      fetch(
-        URL,
-        {
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            method: "DELETE",
-        })
+      deleteEvaluation(evaluationId)
     }
   }
 
@@ -47,7 +40,7 @@ class Evaluation extends PureComponent {
              Supprimer
             </Button>
             <Link to={`/${this.state.id}/answer`}>Repondre a une evaluation</Link>
-             | 
+             |
             <Link to={`/${this.state.id}/addquestions`}>Ajouter des questions</Link>
           </Paper>
       )
