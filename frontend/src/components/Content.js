@@ -1,16 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Typography, withStyles} from 'material-ui';
+import {withStyles} from 'material-ui';
+import {Route, withRouter} from 'react-router-dom';
 
-import logo from '../markus.png';
+import Home from './Home';
 import FormEvaluation from './evaluation/FormEvaluation';
 import ListEvaluation from './evaluation/ListEvaluation';
+import AnswerQuestion from './question/AnswerQuestion';
+import FormQuestion from './question/FormQuestion';
 
-const style = {
-  logo: {
-    height: 80
-  }
-};
+const style = {};
 
 class Content extends PureComponent {
   static propTypes = {
@@ -23,25 +22,16 @@ class Content extends PureComponent {
   };
 
   render() {
-    const {classes} = this.props;
-
     return (
       <div className={this.props.className}>
-          <img src={logo} className={classes.logo} alt="logo" />
-        <Typography variant="headline">Welcome to MarkUs</Typography>
-        <br />
-        <br />
-        <Typography variant="headline" component="h1">Créer une évaluation</Typography>
-        <br />
-        <br />
-        <FormEvaluation/>
-        <br />
-        <br />
-        <Typography variant="headline" component="h1">Les Evaluations</Typography>
-        <ListEvaluation/>
+        <Route exact path="/" component={Home}/>
+        <Route path="/evaluations/new" component={FormEvaluation}/>
+        <Route path="/evaluations" component={ListEvaluation}/>
+        <Route path="/:evaluation_id/addquestions" component={FormQuestion}/>
+        <Route path="/:evaluation_id/answer" component={AnswerQuestion}/>
       </div>
     )
   }
 }
 
-export default withStyles(style)(Content);
+export default withRouter(withStyles(style)(Content));
