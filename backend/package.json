@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate-backend",
+  "name": "MarkUs_API",
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "apidoc": {
-    "title": "ApiDoc pour le projet Boilerplate",
+    "title": "ApiDoc pour le projet MarkUs",
     "url": "/api",
     "sampleUrl": "http://localhost:4000/api"
   },
