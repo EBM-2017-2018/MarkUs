@@ -1,6 +1,10 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Typography, Paper, Button, withStyles} from 'material-ui';
+import {Typography, Button, Paper, withStyles} from 'material-ui';
+
+
+import ListQuestion from '../question/ListQuestion'
+import FormQuestion from '../question/FormQuestion'
 
 const styles = {};
 
@@ -26,24 +30,39 @@ class ListEvaluation extends PureComponent {
       .then((response) => { return response.json(); })
       .then((evaluations) => {
         this.setState({evaluations})
-        console.log('v', this.state.evaluations)
       })
+  }
+
+  handleDeleteEvaluation (evaluation_id) {
+    return () => {
+      const URL = `/api/evaluations/${evaluation_id}`;
+      fetch(
+        URL,
+        {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: "DELETE",
+        })
+    }
   }
 
   render() {
     return this.state.evaluations.map((evaluation) => {
             return(
-              <Paper elevation={4}>
-                <Typography variant="headline" component="h1">
-                  {evaluation.name}
-                  <Button variant="raised" color="primary">
-                    +
-                  </Button>
-                </Typography>
-                <Typography component="p">
-                  {evaluation.date}
-                </Typography>
-              </Paper>
+              <div key={evaluation._id}>
+                <Paper elevation={4}>
+                  <Typography variant="headline" component="h1">
+                    {evaluation.name}
+                    <Button onClick={this.handleDeleteEvaluation(evaluation._id)}>
+                     Supprimer
+                    </Button>
+                  </Typography>
+                  <ListQuestion questions={evaluation.questions} />
+                  <FormQuestion evaluation_id={evaluation._id} />
+                </Paper>
+              </div>
             )
         })
     }
