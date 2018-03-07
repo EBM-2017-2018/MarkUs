@@ -63,7 +63,7 @@ module.exports.delete = (req, res) => {
     { _id: req.params.id },
     {
       $pull: {
-        messages: { _id: req.params.mid },
+        questions: { _id: req.params.qid },
       },
     },
     (err) => {
