@@ -7,6 +7,7 @@ const responseController = require('./responseController');
 
 router.get('/', paperController.findAll);
 router.get('/:id', paperController.findOne);
+router.put('/:id', paperController.update);
 router.post('/', paperController.create);
 router.delete('/:id', paperController.delete);
 

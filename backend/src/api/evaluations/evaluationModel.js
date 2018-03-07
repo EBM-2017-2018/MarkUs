@@ -32,6 +32,7 @@ const EvaluationSchema = new Schema({
   },
   groupClass: {
     type: String,
+    required: true,
   },
   questions: [QuestionSchema],
 });
