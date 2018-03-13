@@ -10,7 +10,7 @@ const paperController = require('../papers/paperController');
  * @api {get} /evaluations Récupèrer la liste de toutes les évaluations
  * @apiName GetEvaluations
  * @apiGroup Evaluations
- * @apiDescription Cette URL renvoit un objet au format JSON contenant
+ * @apiDescription Cette requête renvoit un objet au format JSON contenant
  * toutes les évaluations existantes
  *
  * @apiSuccessExample {html} Success-Response:
@@ -32,11 +32,12 @@ const paperController = require('../papers/paperController');
  ]
  */
 router.get('/', evaluationController.findAll);
+
 /**
  * @api {get} /evaluations/:id Récupèrer une évaluation par Id
  * @apiName GetEvaluationById
  * @apiGroup Evaluations
- * @apiDescription Cette URL renvoit un objet au format JSON correspondant à l'évaluation demandée
+ * @apiDescription Une requête qui renvoit un objet au format JSON correspondant à l'évaluation demandée
  *
  * @apiParam  {String} id   ID de l'évaluation à afficher
  * @apiParamExample  {String}  Request-Example:
@@ -53,6 +54,7 @@ router.get('/', evaluationController.findAll);
   }
  */
 router.get('/:id', evaluationController.findOne);
+
 /**
  * @api {post} /evaluations Créer une nouvelle évaluation
  * @apiName PostEvaluation
@@ -93,10 +95,46 @@ router.get('/:id', evaluationController.findOne);
     "__v": 0
    }
  */
-
 router.post('/', evaluationController.create);
+
+/**
+ * @api {delete} /evaluations/:id Supprime une évaluation identifiée par Id
+ * @apiName DeleteEvaluationById
+ * @apiGroup Evaluations
+ * @apiDescription Route permettant de supprimer une évaluation identifiée par son ID
+ *
+ * @apiParam  {String} id   ID de l'évaluation à afficher
+ * @apiParamExample  {String}  Request-Example:
+ *    id: 5aa00cbddfc165256122dccc
+ *
+ * @apiSuccessExample {html} Success-Response:
+ *{
+    "message": "evaluation supprimée"
+  }
+ */
 router.delete('/:id', evaluationController.delete);
 
+/**
+ * @api {get} /evaluations/:id/questions Récupère l'ensemble des questions d'une évaluation
+ * identifiée par son Id
+ * @apiName GetQuestionsByEvaluationId
+ * @apiGroup Evaluations
+ * @apiDescription Renvoit un tableau de Questions correspondant à l'évaluation demandée par Id
+ *
+ * @apiParam  {String} id   ID de l'évaluation à afficher
+ * @apiParamExample  {String}  Request-Example:
+ *    id: 5aa00cbddfc165256122dccc
+ *
+ * @apiSuccessExample {html} Success-Response:
+ * {
+    "date": "2018-03-07T16:01:01.994Z",
+    "questions": [],
+    "_id": "5aa00cbddfc165256122dccc",
+    "name": "Une évaluation particulière",
+    "groupClass": "Un ensemble d'étudiant",
+    "__v": 0
+  }
+ */
 router.get('/:id/questions', questionController.findAll);
 router.get('/:id/questions/:qid', questionController.findOne);
 router.post('/:id/questions', questionController.create);
