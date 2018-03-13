@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {TextField, Button, Typography, withStyles} from 'material-ui';
+import { Redirect } from 'react-router'
 
 import {createCopy, getEvaluation, updateCopy} from '../../services'
 
@@ -22,7 +23,8 @@ class AnswerQuestion extends PureComponent {
       name: '',
       questions: [],
       responses:[],
-      author: 'auteur Par defaut'
+      author: 'auteur Par defaut',
+      fireRedirect: false
     };
   }
 
@@ -58,27 +60,35 @@ class AnswerQuestion extends PureComponent {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault();
     updateCopy(this.state.copy_id, this.state.responses);
+    this.setState({ fireRedirect: true })
   }
 
   render() {
+    const { from } = this.props.location.state || '/'
+    const { fireRedirect } = this.state
+    
     return (
-      <form>
-        {this.state.questions.map((question, index) => {
-          return(
-            <div key={index}>
-              <Typography component="p">
-                {question.content} ? - {question.points} points
-              </Typography>
-              <TextField name="content" onChange={this.handleNameChange(index, question._id)}/>
-            </div>
-          )
-        })}
-        <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
-          Enregistrer sa copie
-        </Button>
-      </form>
+      <div>
+        <form action="/evaluations">
+          {this.state.questions.map((question, index) => {
+            return(
+              <div key={index}>
+                <Typography component="p">
+                  {question.content} ? - {question.points} points
+                </Typography>
+                <TextField name="content" onChange={this.handleNameChange(index, question._id)}/>
+              </div>
+            )
+          })}
+          <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
+            Enregistrer sa copie
+          </Button>
+        </form>
+        {fireRedirect && (
+          <Redirect to={from || '/evaluations'}/>
+        )}
+      </div>
       )
     }
 }
