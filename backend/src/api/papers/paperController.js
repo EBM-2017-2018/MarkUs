@@ -12,7 +12,7 @@ module.exports.findAll = (req, res) => {
 };
 
 module.exports.findAllByEvaluation = (req, res) => {
-  Paper.find({ evaluationId: req.param.id }, (err, papers) => {
+  Paper.find({ evaluationId: req.params.id }, (err, papers) => {
     if (err) {
       return res.send(err);
     }
