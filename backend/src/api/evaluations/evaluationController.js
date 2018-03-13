@@ -33,7 +33,6 @@ module.exports.create = (req, res) => {
   });
 };
 
-
 module.exports.delete = (req, res) => {
   Evaluation.deleteOne(
     { _id: req.params.id },

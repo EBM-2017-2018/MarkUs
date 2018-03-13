@@ -13,10 +13,10 @@ const QuestionSchema = new Schema({
     required: true,
   },
   format: {
-    type: [{
+    type: {
       type: String,
       enum: ['textarea', 'checkboxes'],
-    }],
+    },
     default: 'textarea',
   },
 });
