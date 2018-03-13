@@ -33,6 +33,43 @@ module.exports.create = (req, res) => {
   });
 };
 
+module.exports.update = (req, res) => {
+  const {
+    name,
+    published,
+    questions,
+    groupClass,
+  } = req.body;
+  const set = {};
+  if (typeof (name) === 'string') {
+    set.name = name;
+  }
+  if (typeof (groupClass) === 'string') {
+    set.groupClass = groupClass;
+  }
+  if (typeof (published) === 'boolean') {
+    set.published = published;
+  }
+  if (typeof (questions) === 'object') {
+    set.questions = questions;
+  }
+  Evaluation.update(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: set,
+    },
+    { multi: true },
+    (err) => {
+      if (err) {
+        return res.json(err);
+      }
+      return res.end();
+    },
+  );
+};
+
 module.exports.delete = (req, res) => {
   Evaluation.deleteOne(
     { _id: req.params.id },

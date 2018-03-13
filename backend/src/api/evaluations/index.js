@@ -98,6 +98,8 @@ router.get('/:id', evaluationController.findOne);
  */
 router.post('/', evaluationController.create);
 
+router.put('/:id', evaluationController.update);
+
 /**
  * @api {delete} /evaluations/:id Supprime une évaluation identifiée par Id
  * @apiName DeleteEvaluationById
@@ -115,8 +117,6 @@ router.post('/', evaluationController.create);
     "message": "evaluation supprimée"
   }
  */
-
-router.put('/:id', evaluationController.update);
 router.delete('/:id', evaluationController.delete);
 
 /**
