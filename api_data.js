@@ -1,11 +1,56 @@
 define({ "api": [
   {
+    "type": "delete",
+    "url": "/evaluations/:id",
+    "title": "Supprime une évaluation identifiée par Id",
+    "name": "DeleteEvaluationById",
+    "group": "Evaluations",
+    "description": "<p>Route permettant de supprimer une évaluation identifiée par son ID</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID de l'évaluation à afficher</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "id: 5aa00cbddfc165256122dccc",
+          "type": "String"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"evaluation supprimée\"\n  }",
+          "type": "html"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/evaluations/index.js",
+    "groupTitle": "Evaluations",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/evaluations/:id"
+      }
+    ]
+  },
+  {
     "type": "get",
     "url": "/evaluations/:id",
     "title": "Récupèrer une évaluation par Id",
     "name": "GetEvaluationById",
     "group": "Evaluations",
-    "description": "<p>Cette URL renvoit un objet au format JSON correspondant à l'évaluation demandée</p>",
+    "description": "<p>Une requête qui renvoit un objet au format JSON correspondant à l'évaluation demandée</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -46,11 +91,56 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/evaluations/:id/questions Récupère l'ensemble des questions d'une évaluation",
+    "title": "* identifiée par son Id",
+    "name": "GetEvaluationById",
+    "group": "Evaluations",
+    "description": "<p>Une requête qui renvoit un objet au format JSON correspondant à l'évaluation demandée</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID de l'évaluation à afficher</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "id: 5aa00cbddfc165256122dccc",
+          "type": "String"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"date\": \"2018-03-07T16:01:01.994Z\",\n    \"questions\": [],\n    \"_id\": \"5aa00cbddfc165256122dccc\",\n    \"name\": \"Une évaluation particulière\",\n    \"groupClass\": \"Un ensemble d'étudiant\",\n    \"__v\": 0\n  }",
+          "type": "html"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/evaluations/index.js",
+    "groupTitle": "Evaluations",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/evaluations/:id/questions Récupère l'ensemble des questions d'une évaluation"
+      }
+    ]
+  },
+  {
+    "type": "get",
     "url": "/evaluations",
     "title": "Récupèrer la liste de toutes les évaluations",
     "name": "GetEvaluations",
     "group": "Evaluations",
-    "description": "<p>Cette URL renvoit un objet au format JSON contenant toutes les évaluations existantes</p>",
+    "description": "<p>Cette requête renvoit un objet au format JSON contenant toutes les évaluations existantes</p>",
     "success": {
       "examples": [
         {
