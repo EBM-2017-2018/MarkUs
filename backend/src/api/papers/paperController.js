@@ -34,15 +34,16 @@ module.exports.findOne = (req, res) => {
 
 module.exports.update = (req, res) => {
   const { responses, corrected } = req.body;
+  const set = { responses };
+  if (typeof (corrected) === 'boolean') {
+    set.corrected = corrected;
+  }
   Paper.update(
     {
       _id: req.params.id,
     },
     {
-      $set: {
-        responses,
-        corrected,
-      },
+      $set: set,
     },
     { multi: true },
     (err) => {
