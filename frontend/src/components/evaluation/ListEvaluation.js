@@ -22,9 +22,7 @@ class ListEvaluation extends PureComponent {
   componentDidMount(){
     this.updateEvalutation()
   }
-  componentWillUpdate(){
-    this.updateEvalutation()
-  }
+
 
   updateEvalutation() {
     getEvaluations()

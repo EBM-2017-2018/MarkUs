@@ -1,5 +1,7 @@
 const BASE_URL = '/api';
 
+
+// EVALUATIONS
 export const getEvaluation = (evaluationId) => {
   const url = `${BASE_URL}/evaluations/${evaluationId}`;
   return fetch(url).then(response => response.json())
@@ -8,20 +10,6 @@ export const getEvaluation = (evaluationId) => {
 export const getEvaluations = () => {
   const url = `${BASE_URL}/evaluations`;
   return fetch(url).then(response => response.json())
-}
-
-export const createCopy = (evaluationId, authorId) => {
-  return fetch(`${BASE_URL}/papers`, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          evaluationId : evaluationId,
-          author: authorId
-        })
-    }).then(res => res.json())
 }
 
 export const createEvaluation = (name) => {
@@ -38,6 +26,34 @@ export const createEvaluation = (name) => {
     }).then(res => res.json())
 }
 
+export const publishEvaluation = (id, publishState) => {
+  return fetch(
+    `${BASE_URL}/evaluations/${id}`,
+    {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          published: publishState,
+        })
+    })
+}
+
+export const deleteEvaluation = (evaluationId) => {
+  return fetch(
+    `${BASE_URL}/evaluations/${evaluationId}`,
+    {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "DELETE",
+    })
+}
+
+// QUESTIONS
 export const createQuestion = (evaluationId, content, points) => {
   return fetch(`${BASE_URL}/evaluations/${evaluationId}/questions`, {
         headers: {
@@ -52,16 +68,19 @@ export const createQuestion = (evaluationId, content, points) => {
     }).then(res => res.json())
 }
 
-export const deleteEvaluation = (evaluationId) => {
-  return fetch(
-    `${BASE_URL}/evaluations/${evaluationId}`,
-    {
+// COPY
+export const createCopy = (evaluationId, authorId) => {
+  return fetch(`${BASE_URL}/papers`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        method: "DELETE",
-    })
+        method: 'POST',
+        body: JSON.stringify({
+          evaluationId : evaluationId,
+          author: authorId
+        })
+    }).then(res => res.json())
 }
 
 export const updateCopy = (id, responses) => {
