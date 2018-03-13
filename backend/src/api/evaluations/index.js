@@ -98,6 +98,39 @@ router.get('/:id', evaluationController.findOne);
  */
 router.post('/', evaluationController.create);
 
+/**
+ * @api {put} /evaluations/:id Modifier une évaluation
+ * @apiName UpdateEvaluation
+ * @apiGroup Evaluations
+ * @apiDescription Modifie une évaluation
+ *
+ *
+ * @apiParam {String} name nom de l'évaluation à insérer
+ *
+ * @apiParam {String} groupClass groupe d'élèves visé par l'évaluation
+ *
+ * @apiParam {[Questions]} [questions] tableau de questions de l'évaluation. Si absent, sera
+ * initialisé vide. Une question dont le format ne sera pas précisé aura par défaut un format
+ * "textarea".
+ *
+ * @apiParam {Boolean} published
+ *
+ * @apiParamExample  {json}  Request-Example:
+ *    {
+ *    name: "Nouvelle éval",
+ *    groupClass: "EBM_17_18",
+ *    questions: [
+   *    { content:"Est-ce une question ?",
+   *      points : 3,
+   *      format : "checkboxes"
+   *    },
+   *    { content:"Est-ce une autre question ?",
+   *      points : 2
+   *    }]
+ *    },
+ *    published : true
+ *
+ */
 router.put('/:id', evaluationController.update);
 
 /**
@@ -123,7 +156,7 @@ router.delete('/:id', evaluationController.delete);
  * @api {get} /evaluations/:id/questions
  * Récupère l'ensemble des questions d'une évaluation identifiée par son Id
  * @apiName GetQuestionsByEvaluationId
- * @apiGroup Evaluations
+ * @apiGroup Questions
  * @apiDescription Une requête qui renvoit un tableau de questions pour une évaluation donnée
  * identifiée par son Id
  *
@@ -156,7 +189,7 @@ router.get('/:id/questions', questionController.findAll);
  * @api {get} /evaluations/:id/questions/:qid
  * Récupère une question identifiée par son Id
  * @apiName GetQuestionById
- * @apiGroup Evaluations
+ * @apiGroup Questions
  * @apiDescription Une requête qui renvoit question donnée identifiée par son Id
  * pour une évaluation donnée identifiée par son Id
  *
@@ -180,10 +213,10 @@ router.get('/:id/questions/:qid', questionController.findOne);
  * @api {post} /evaluations/:id/questions
  * Crée une question dans l'évaluation donnée
  * @apiName PostQuestion
- * @apiGroup Evaluations
+ * @apiGroup Questions
  * @apiDescription Une requête qui crée une question dans une évaluation donnée
  *
- * @apiParam  {String} id   ID de l'évaluation dont il faut renvoyer les questions
+ * @apiParam  {String} id   ID de l'évaluation pour laquelle il faut créer la question
  * @apiParam  {String} content  Intitulé de la question
  * @apiParam  {number} points   Nombre de points attribué à cette question
  * @apiParam  {number} [format]   Format de la question (textarea, checkboxes, ...). "textarea" par
@@ -206,8 +239,60 @@ router.get('/:id/questions/:qid', questionController.findOne);
  }
  */
 router.post('/:id/questions', questionController.create);
+
+/**
+ * @api {delete} /evaluations/:id/questions/:qid
+ * Supprime une question identifiée par id
+ * @apiName DeleteQuestion
+ * @apiGroup Questions
+ * @apiDescription Une requête qui crée une question dans une évaluation donnée
+ *
+ * @apiParam  {String} id   ID de l'évaluation pour laquelle il faut créer la question
+ * @apiParam  {String} qid   ID de la question à supprimer
+ * @apiParamExample  {string}  Request-Example:
+ *    id: 5aa00cbddfc165256122dccc,
+ *    qid: 5aa00cbddfc165256122dccc
+ *
+ * @apiSuccessExample {html} Success-Response:
+ *  { message : "la question a été supprimé }
+ */
 router.delete('/:id/questions/:qid', questionController.delete);
 
+/**
+ * @api {get} /evaluations/:id/papers
+ * Récupère l'ensemble des copies associées à une évaluation identifiée par son Id
+ * @apiName GetPapersByEvaluationId
+ * @apiGroup Papers
+ * @apiDescription Une requête qui renvoit un tableau de copies pour une évaluation donnée
+ * identifiée par son Id
+ *
+ * @apiParam  {String} id   ID de l'évaluation dont il faut renvoyer les copies
+
+ * @apiParamExample  {String}  Request-Example:
+ *    id: 5aa00cbddfc165256122dccc
+ *
+ * @apiSuccessExample {html} Success-Response:
+ * [
+ {
+     "date": "2018-03-13T08:00:09.084Z",
+     "responses": [],
+     "corrected": false,
+     "_id": "5aa78509d25158676fd19935",
+     "evaluationId": "5aa784bcd25158676fd19934",
+     "author": "author",
+     "__v": 0
+ },
+ {
+     "date": "2018-03-13T08:00:11.472Z",
+     "responses": [],
+     "corrected": false,
+     "_id": "5aa7850bd25158676fd19936",
+     "evaluationId": "5aa784bcd25158676fd19934",
+     "author": "author",
+     "__v": 0
+ },
+ ]
+ */
 router.get('/:id/papers', paperController.findAllByEvaluation);
 
 module.exports = router;
