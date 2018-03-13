@@ -37,7 +37,8 @@ router.get('/', evaluationController.findAll);
  * @api {get} /evaluations/:id Récupèrer une évaluation par Id
  * @apiName GetEvaluationById
  * @apiGroup Evaluations
- * @apiDescription Une requête qui renvoit un objet au format JSON correspondant à l'évaluation demandée
+ * @apiDescription Une requête qui renvoit un objet au format JSON correspondant à l'évaluation
+ * demandée
  *
  * @apiParam  {String} id   ID de l'évaluation à afficher
  * @apiParamExample  {String}  Request-Example:
