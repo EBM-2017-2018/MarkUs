@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Typography, withStyles} from 'material-ui';
 
+import {getEvaluation} from '../../services'
+
 const styles = {};
 
 class ListQuestion extends PureComponent {
@@ -20,22 +22,15 @@ class ListQuestion extends PureComponent {
     };
   }
 
-  componentWillMount(){
-    this.fetchEvalutation();
-  }
-
-  fetchEvalutation() {
-    const URL = `/api/evaluations/${this.props.evaluation_id}`;
-    fetch(URL)
-      .then((response) => { return response.json(); })
-      .then((evaluations) => {
-        this.setState({
-          date: evaluations.date,
-          id : evaluations.id,
-          name: evaluations.name,
-          questions: evaluations.questions
-        })
-      })
+  async componentWillMount(){
+    const evaluation = await getEvaluation(this.props.evaluation_id)
+    this.setState({
+      date: evaluation.date,
+      id : evaluation.id,
+      name: evaluation.name,
+      questions: evaluation.questions
+    })
+    console.log('e',evaluation);
   }
 
 
