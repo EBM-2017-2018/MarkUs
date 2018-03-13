@@ -8,6 +8,9 @@ import FormEvaluation from './evaluation/FormEvaluation';
 import ListEvaluation from './evaluation/ListEvaluation';
 import AnswerQuestion from './question/AnswerQuestion';
 import FormQuestion from './question/FormQuestion';
+import Student from './Student';
+import Admin from './Admin';
+
 
 const style = {};
 
@@ -25,6 +28,9 @@ class Content extends PureComponent {
     return (
       <div className={this.props.className}>
         <Route exact path="/" component={Home}/>
+        <Student />
+        <br /> ----------------
+        <Admin />
         <Route path="/evaluations/new" component={FormEvaluation}/>
         <Route path="/evaluations" component={ListEvaluation}/>
         <Route path="/:evaluation_id/addquestions" component={FormQuestion}/>
