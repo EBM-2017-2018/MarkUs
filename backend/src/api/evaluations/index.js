@@ -116,10 +116,11 @@ router.delete('/:id', evaluationController.delete);
 
 /**
  * @api {get} /evaluations/:id/questions Récupère l'ensemble des questions d'une évaluation
- * identifiée par son Id
- * @apiName GetQuestionsByEvaluationId
+ * * identifiée par son Id
+ * @apiName GetEvaluationById
  * @apiGroup Evaluations
- * @apiDescription Renvoit un tableau de Questions correspondant à l'évaluation demandée par Id
+ * @apiDescription Une requête qui renvoit un objet au format JSON correspondant à l'évaluation
+ * demandée
  *
  * @apiParam  {String} id   ID de l'évaluation à afficher
  * @apiParamExample  {String}  Request-Example:
