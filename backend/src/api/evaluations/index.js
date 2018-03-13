@@ -104,7 +104,9 @@ router.post('/', evaluationController.create);
  * @apiGroup Evaluations
  * @apiDescription Route permettant de supprimer une évaluation identifiée par son ID
  *
+
  * @apiParam  {String} id   ID de l'évaluation à supprimer
+
  * @apiParamExample  {String}  Request-Example:
  *    id: 5aa00cbddfc165256122dccc
  *
@@ -113,6 +115,7 @@ router.post('/', evaluationController.create);
     "message": "evaluation supprimée"
   }
  */
+
 router.put('/:id', evaluationController.update);
 router.delete('/:id', evaluationController.delete);
 
@@ -125,10 +128,12 @@ router.delete('/:id', evaluationController.delete);
  * identifiée par son Id
  *
  * @apiParam  {String} id   ID de l'évaluation dont il faut renvoyer les questions
+
  * @apiParamExample  {String}  Request-Example:
  *    id: 5aa00cbddfc165256122dccc
  *
  * @apiSuccessExample {html} Success-Response:
+
  *[
  {
      "format": "textarea",
@@ -143,6 +148,7 @@ router.delete('/:id', evaluationController.delete);
      "_id": "5aa789b5ef45226bfff41a2a"
  },
  ]
+
  */
 router.get('/:id/questions', questionController.findAll);
 

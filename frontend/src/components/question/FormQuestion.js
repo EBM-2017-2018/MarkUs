@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Typography, TextField, Button, withStyles} from 'material-ui';
 
 import ListQuestion from './ListQuestion';
+import {createQuestion} from '../../services'
 
 const styles = {};
 
@@ -25,20 +26,7 @@ class FormEvaluation extends PureComponent {
 
   handleSubmit(event) {
     event.preventDefault();
-    const URL = `/api/evaluations/${this.props.match.params.evaluation_id}/questions`;
-    fetch(
-      URL,
-      {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: "POST",
-          body: JSON.stringify({
-            content: this.state.content,
-            points: this.state.points,
-          })
-      })
+    createQuestion(this.props.match.params.evaluation_id, this.state.content, this.state.points)
   }
 
   handleContentChange(event) {

@@ -35,6 +35,10 @@ const EvaluationSchema = new Schema({
     required: true,
   },
   questions: [QuestionSchema],
+  published: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Evaluation', EvaluationSchema);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui';
 
 import Evaluation from './Evaluation';
+import {getEvaluations} from '../../services'
 
 const styles = {};
 
@@ -18,20 +19,18 @@ class ListEvaluation extends PureComponent {
     };
   }
 
-  componentWillMount(){
-    this.fetchEvalutation();
+  componentDidMount(){
+    this.updateEvalutation()
   }
   componentWillUpdate(){
-    this.fetchEvalutation();
+    this.updateEvalutation()
   }
 
-  fetchEvalutation() {
-    const URL = '/api/evaluations';
-    fetch(URL)
-      .then((response) => { return response.json(); })
-      .then((evaluations) => {
-        this.setState({evaluations})
-      })
+  updateEvalutation() {
+    getEvaluations()
+    .then((evaluations) => {
+      this.setState({evaluations})
+    })
   }
 
   render() {
