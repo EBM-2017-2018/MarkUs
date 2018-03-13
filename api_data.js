@@ -14,7 +14,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "id",
-            "description": "<p>ID de l'évaluation à afficher</p>"
+            "description": "<p>ID de l'évaluation à supprimer</p>"
           }
         ]
       },
@@ -91,51 +91,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/evaluations/:id/questions Récupère l'ensemble des questions d'une évaluation",
-    "title": "* identifiée par son Id",
-    "name": "GetEvaluationById",
-    "group": "Evaluations",
-    "description": "<p>Une requête qui renvoit un objet au format JSON correspondant à l'évaluation demandée</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>ID de l'évaluation à afficher</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "id: 5aa00cbddfc165256122dccc",
-          "type": "String"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"date\": \"2018-03-07T16:01:01.994Z\",\n    \"questions\": [],\n    \"_id\": \"5aa00cbddfc165256122dccc\",\n    \"name\": \"Une évaluation particulière\",\n    \"groupClass\": \"Un ensemble d'étudiant\",\n    \"__v\": 0\n  }",
-          "type": "html"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "src/api/evaluations/index.js",
-    "groupTitle": "Evaluations",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:4000/api/evaluations/:id/questions Récupère l'ensemble des questions d'une évaluation"
-      }
-    ]
-  },
-  {
-    "type": "get",
     "url": "/evaluations",
     "title": "Récupèrer la liste de toutes les évaluations",
     "name": "GetEvaluations",
@@ -156,6 +111,103 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost:4000/api/evaluations"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/evaluations/:id/questions/:qid",
+    "title": "Récupère une question identifiée par son Id",
+    "name": "GetQuestionById",
+    "group": "Evaluations",
+    "description": "<p>Une requête qui renvoit question donnée identifiée par son Id pour une évaluation donnée identifiée par son Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID de l'évaluation dont il faut renvoyer la question</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "qid",
+            "description": "<p>ID de la question</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "id: 5aa00cbddfc165256122dccc\nqid: 5aa00cbddfc165256122dccc",
+          "type": "String"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"format\": \"textarea\",\n    \"content\": \"questions\",\n    \"points\": 2,\n    \"_id\": \"5aa789b5ef45226bfff41a2a\"\n}",
+          "type": "html"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/evaluations/index.js",
+    "groupTitle": "Evaluations",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/evaluations/:id/questions/:qid"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/evaluations/:id/questions",
+    "title": "Récupère l'ensemble des questions d'une évaluation identifiée par son Id",
+    "name": "GetQuestionsByEvaluationId",
+    "group": "Evaluations",
+    "description": "<p>Une requête qui renvoit un tableau de questions pour une évaluation donnée identifiée par son Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID de l'évaluation dont il faut renvoyer les questions</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "id: 5aa00cbddfc165256122dccc",
+          "type": "String"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n {\n     \"format\": \"textarea\",\n     \"content\": \"questions\",\n     \"points\": 2,\n     \"_id\": \"5aa789b5ef45226bfff41a29\"\n },\n {\n     \"format\": \"textarea\",\n     \"content\": \"questions\",\n     \"points\": 2,\n     \"_id\": \"5aa789b5ef45226bfff41a2a\"\n },\n ]",
+          "type": "html"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/evaluations/index.js",
+    "groupTitle": "Evaluations",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/evaluations/:id/questions"
       }
     ]
   },
@@ -215,6 +267,72 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost:4000/api/evaluations"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/evaluations/:id/questions",
+    "title": "Crée une question dans l'évaluation donnée",
+    "name": "PostQuestion",
+    "group": "Evaluations",
+    "description": "<p>Une requête qui crée une question dans une évaluation donnée</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID de l'évaluation dont il faut renvoyer les questions</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>Intitulé de la question</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "points",
+            "description": "<p>Nombre de points attribué à cette question</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "format",
+            "description": "<p>Format de la question (textarea, checkboxes, ...). &quot;textarea&quot; par défaut</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  id: 5aa00cbddfc165256122dccc,\n  body:{\n    content:\"Est-ce une question ?\",\n    points: 3,\n    format: \"checkboxes\"\n  },\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"format\":\"textarea\",\n    \"content\": \"questions\",\n    \"points\": 2\n}",
+          "type": "html"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/evaluations/index.js",
+    "groupTitle": "Evaluations",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/evaluations/:id/questions"
       }
     ]
   }
