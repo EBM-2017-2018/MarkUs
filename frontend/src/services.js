@@ -2,6 +2,8 @@
 import { checkAuthResponse, getAuthHeaders } from 'ebm-auth/dist/browser';
 const BASE_URL = '/api';
 
+
+// EVALUATIONS
 export const getEvaluation = (evaluationId) => {
   const url = `${BASE_URL}/evaluations/${evaluationId}`;
   return fetch(url, { headers: getAuthHeaders() })
@@ -22,8 +24,8 @@ export const createCopy = (evaluationId, authorId) => {
         headers: getAuthHeaders(),
         method: 'POST',
         body: JSON.stringify({
-          evaluationId : evaluationId,
-          author: authorId
+          name : name,
+          groupClass: 'groupClass'
         })
     })
     .then(checkAuthResponse)
@@ -35,13 +37,26 @@ export const createEvaluation = (name) => {
         headers: getAuthHeaders(),
         method: 'POST',
         body: JSON.stringify({
-          name : name,
-          groupClass: 'groupClass'
+          published: publishState,
         })
     }).then(checkAuthResponse)
     .then(res => res.json())
+
 }
 
+export const deleteEvaluation = (evaluationId) => {
+  return fetch(
+    `${BASE_URL}/evaluations/${evaluationId}`,
+    {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "DELETE",
+    })
+}
+
+// QUESTIONS
 export const createQuestion = (evaluationId, content, points) => {
   return fetch(`${BASE_URL}/evaluations/${evaluationId}/questions`, {
         headers: getAuthHeaders(),
@@ -62,6 +77,7 @@ export const deleteEvaluation = (evaluationId) => {
         headers: getAuthHeaders(),
         method: "DELETE",
     }).then(checkAuthResponse)
+
 }
 
 export const updateCopy = (id, responses) => {
