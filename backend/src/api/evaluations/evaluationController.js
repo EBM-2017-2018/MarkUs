@@ -82,7 +82,7 @@ module.exports.update = (req, res) => {
         if (err) {
           return res.json(err);
         }
-        return res.end();
+        return res.json({ update: 'done' });
       },
     );
   }
