@@ -206,6 +206,13 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "author",
+            "description": "<p>identifiant de l'auteur de l'évalutation</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Boolean",
             "optional": false,
             "field": "published",
@@ -216,7 +223,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\nname: \"Nouvelle éval\",\ngroupClass: \"EBM_17_18\",\nquestions: [\n{ content:\"Est-ce une question ?\",\n  points : 3,\n  format : \"checkboxes\"\n},\n{ content:\"Est-ce une autre question ?\",\n  points : 2\n}]\n},\npublished : true",
+          "content": "{\nname: \"Nouvelle éval\",\ngroupClass: \"EBM_17_18\",\nauthor:\"professeur\",\nquestions: [\n{ content:\"Est-ce une question ?\",\n  points : 3,\n  format : \"checkboxes\"\n},\n{ content:\"Est-ce une autre question ?\",\n  points : 2\n}]\n},\npublished : true",
           "type": "json"
         }
       ]
