@@ -23,7 +23,6 @@ class ListEvaluation extends PureComponent {
     this.updateEvalutation()
   }
 
-
   updateEvalutation() {
     getEvaluations()
     .then((evaluations) => {
