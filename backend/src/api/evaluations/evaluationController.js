@@ -3,7 +3,7 @@ const Evaluation = require('./evaluationModel');
 module.exports = {};
 
 module.exports.findAll = (req, res) => {
-  if (req.user.role === 'admin' || req.user.role === 'intervenant') {
+  if (req.user.role === 'administrateur' || req.user.role === 'intervenant') {
     Evaluation.find({}, (err, evaluations) => {
       if (err) {
         return res.send(err);
@@ -27,7 +27,7 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      if (req.user.role === 'admin' || req.user.role === 'intervenant' || evaluation.published) {
+      if (req.user.role === 'administrateur' || req.user.role === 'intervenant' || evaluation.published) {
         return res.json(evaluation);
       }
       return res.json({ message: 'Access Denied' });
@@ -37,8 +37,9 @@ module.exports.findOne = (req, res) => {
 
 module.exports.create = (req, res) => {
   const evaluation = new Evaluation(req.body);
-  if (req.user.role === 'intervenant' || req.user.role === 'admin') {
-    evaluation.save((err) => {
+  console.log(req.user);
+  if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
+    return evaluation.save((err) => {
       if (err) {
         return res.json(err);
       }
@@ -49,7 +50,7 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.update = (req, res) => {
-  if (req.user.role === 'intervenant' || req.user.role === 'admin') {
+  if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
     const {
       name,
       published,
