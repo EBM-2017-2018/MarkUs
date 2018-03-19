@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
-import {Typography, Button, Paper, withStyles} from 'material-ui';
+import {Typography, Button, Paper, withStyles, Switch} from 'material-ui';
 
-import {deleteEvaluation} from '../../services'
+import {deleteEvaluation, publishEvaluation} from '../../services'
 
 import {Link} from 'react-router-dom';
 
@@ -15,9 +15,17 @@ class Evaluation extends PureComponent {
       id: props.evaluation._id,
       date: props.evaluation.date,
       name: props.evaluation.name,
-      questions: props.evaluation.questions,
+      // questions: props.evaluation.questions,
+      published: props.evaluation.published,
     };
   }
+
+  handleChange = (event) => {
+    this.setState({ published: event.target.checked })
+    console.log(event.target.checked )
+    publishEvaluation(this.state.id, event.target.checked).then()
+
+  };
 
   handleDeleteEvaluation (evaluationId) {
     return () => {
@@ -35,6 +43,10 @@ class Evaluation extends PureComponent {
           <Paper elevation={4}>
             <Typography variant="headline" component="h1">
               {this.state.name}
+              <Switch
+                checked={this.state.published}
+                onChange={this.handleChange}
+              />
             </Typography>
             <Button onClick={this.handleDeleteEvaluation(this.state.id)}>
              Supprimer
