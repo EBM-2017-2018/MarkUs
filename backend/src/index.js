@@ -1,3 +1,5 @@
+const User = require('./user');
+
 const path = require('path');
 
 const express = require('express');
@@ -9,9 +11,19 @@ const app = express();
 const server = require('http')
   .Server(app);
 
+app.use(require('ebm-auth')
+  .initialize({
+    provider: 'https://linkapp.ebm.nymous.io/',
+    userFactory: userData => User.findOne({ linkappId: 'userData._id' })
+      .then(user => Object.assign({}, userData, user)),
+  }));
+
 app.use(bodyParser.json());
 
-app.use('/api', require('./api'));
+app.use('/api', require('ebm-auth')
+  .requireAuth({
+    provider: 'https://linkapp.ebm.nymous.io/',
+  }), require('./api'));
 
 app.use(serveStatic('./public'));
 
