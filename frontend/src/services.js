@@ -30,6 +30,18 @@ export const createCopy = (evaluationId, authorId) => {
     .then(res => res.json())
 }
 
+export const publishEvaluation = (id, publishState) => {
+  return fetch(
+    `${BASE_URL}/evaluations/${id}`,
+    {
+        headers: getAuthHeaders(),
+        method: "PUT",
+        body: JSON.stringify({
+          published: publishState,
+        })
+    }).then(checkAuthResponse)
+}
+
 export const createEvaluation = (name) => {
   return fetch(`${BASE_URL}/evaluations`, {
         headers: getAuthHeaders(),
