@@ -113,12 +113,15 @@ router.post('/', evaluationController.create);
  * initialisé vide. Une question dont le format ne sera pas précisé aura par défaut un format
  * "textarea".
  *
+ * @apiParam  {String} author   identifiant de l'auteur de l'évalutation
+ *
  * @apiParam {Boolean} published
  *
  * @apiParamExample  {json}  Request-Example:
  *    {
  *    name: "Nouvelle éval",
  *    groupClass: "EBM_17_18",
+ *    author:"professeur",
  *    questions: [
    *    { content:"Est-ce une question ?",
    *      points : 3,

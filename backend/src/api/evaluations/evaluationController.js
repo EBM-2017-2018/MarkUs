@@ -3,12 +3,21 @@ const Evaluation = require('./evaluationModel');
 module.exports = {};
 
 module.exports.findAll = (req, res) => {
-  Evaluation.find({}, (err, evaluations) => {
-    if (err) {
-      return res.send(err);
-    }
-    return res.json(evaluations);
-  });
+  if (req.user.role === 'admin' || req.user.role === 'intervenant') {
+    Evaluation.find({}, (err, evaluations) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.json(evaluations);
+    });
+  } else {
+    Evaluation.find({ published: true }, (err, evaluations) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.json(evaluations);
+    });
+  }
 };
 
 module.exports.findOne = (req, res) => {
@@ -18,56 +27,65 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      return res.json(evaluation);
+      if (req.user.role === 'admin' || req.user.role === 'intervenant' || evaluation.published) {
+        return res.json(evaluation);
+      }
+      return res.json({ message: 'Access Denied' });
     },
   );
 };
 
 module.exports.create = (req, res) => {
   const evaluation = new Evaluation(req.body);
-  evaluation.save((err) => {
-    if (err) {
-      return res.json(err);
-    }
-    return res.json(evaluation);
-  });
-};
-
-module.exports.update = (req, res) => {
-  const {
-    name,
-    published,
-    questions,
-    groupClass,
-  } = req.body;
-  const set = {};
-  if (typeof (name) === 'string') {
-    set.name = name;
-  }
-  if (typeof (groupClass) === 'string') {
-    set.groupClass = groupClass;
-  }
-  if (typeof (published) === 'boolean') {
-    set.published = published;
-  }
-  if (typeof (questions) === 'object') {
-    set.questions = questions;
-  }
-  Evaluation.update(
-    {
-      _id: req.params.id,
-    },
-    {
-      $set: set,
-    },
-    { multi: true },
-    (err) => {
+  if (req.user.role === 'intervenant' || req.user.role === 'admin') {
+    evaluation.save((err) => {
       if (err) {
         return res.json(err);
       }
-      return res.end();
-    },
-  );
+      return res.json(evaluation);
+    });
+  }
+  return res.json({ message: 'Access Denied' });
+};
+
+module.exports.update = (req, res) => {
+  if (req.user.role === 'intervenant' || req.user.role === 'admin') {
+    const {
+      name,
+      published,
+      questions,
+      groupClass,
+    } = req.body;
+    const set = {};
+    if (typeof (name) === 'string') {
+      set.name = name;
+    }
+    if (typeof (groupClass) === 'string') {
+      set.groupClass = groupClass;
+    }
+    if (typeof (published) === 'boolean') {
+      set.published = published;
+    }
+    if (typeof (questions) === 'object') {
+      set.questions = questions;
+    }
+    Evaluation.update(
+      {
+        _id: req.params.id,
+      },
+      {
+        $set: set,
+      },
+      { multi: true },
+      (err) => {
+        if (err) {
+          return res.json(err);
+        }
+        return res.end();
+      },
+    );
+  }
+  return res.json({ message: 'Access Denied' });
 };
 
 module.exports.delete = (req, res) => {
@@ -82,3 +100,4 @@ module.exports.delete = (req, res) => {
     },
   );
 };
+
