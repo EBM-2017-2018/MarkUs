@@ -48,6 +48,7 @@ export const createEvaluation = (name) => {
         method: 'POST',
         body: JSON.stringify({
           name : name,
+          author: 'author',
           groupClass: 'groupClass'
         })
     }).then(checkAuthResponse)

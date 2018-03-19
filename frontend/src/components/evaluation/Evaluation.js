@@ -23,8 +23,7 @@ class Evaluation extends PureComponent {
   handleChange = (event) => {
     this.setState({ published: event.target.checked })
     console.log(event.target.checked )
-    publishEvaluation(this.state.id, event.target.checked).then()
-
+    publishEvaluation(this.state.id, event.target.checked)
   };
 
   handleDeleteEvaluation (evaluationId) {
