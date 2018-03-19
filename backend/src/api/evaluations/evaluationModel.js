@@ -32,6 +32,10 @@ const EvaluationSchema = new Schema({
     type: String,
     required: true,
   },
+  author: {
+    type: String,
+    required: true,
+  },
   questions: [QuestionSchema],
   published: {
     type: Boolean,
