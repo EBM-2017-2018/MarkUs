@@ -34,7 +34,9 @@ export const publishEvaluation = (id, publishState) => {
   return fetch(
     `${BASE_URL}/evaluations/${id}`,
     {
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
         method: "PUT",
         body: JSON.stringify({
           published: publishState,
@@ -44,7 +46,9 @@ export const publishEvaluation = (id, publishState) => {
 
 export const createEvaluation = (name) => {
   return fetch(`${BASE_URL}/evaluations`, {
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
         method: 'POST',
         body: JSON.stringify({
           name : name,
@@ -57,7 +61,9 @@ export const createEvaluation = (name) => {
 
 export const createQuestion = (evaluationId, content, points) => {
   return fetch(`${BASE_URL}/evaluations/${evaluationId}/questions`, {
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
         method: 'POST',
         body: JSON.stringify({
           content : content,
@@ -72,7 +78,9 @@ export const deleteEvaluation = (evaluationId) => {
   return fetch(
     `${BASE_URL}/evaluations/${evaluationId}`,
     {
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
         method: "DELETE",
     }).then(checkAuthResponse)
 }
@@ -81,7 +89,9 @@ export const updateCopy = (id, responses) => {
   return fetch(
     `${BASE_URL}/papers/${id}`,
     {
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
         method: "PUT",
         body: JSON.stringify({
           responses: responses,
