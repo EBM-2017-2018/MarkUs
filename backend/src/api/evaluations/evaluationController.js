@@ -70,7 +70,7 @@ module.exports.update = (req, res) => {
     if (typeof (questions) === 'object') {
       set.questions = questions;
     }
-    Evaluation.update(
+    return Evaluation.update(
       {
         _id: req.params.id,
       },
