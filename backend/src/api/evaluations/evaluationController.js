@@ -90,15 +90,18 @@ module.exports.update = (req, res) => {
 };
 
 module.exports.delete = (req, res) => {
-  Evaluation.deleteOne(
-    { _id: req.params.id },
-    (err) => {
-      if (err) {
-        return res.json(err);
-      }
+  if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
+    Evaluation.deleteOne(
+      { _id: req.params.id },
+      (err) => {
+        if (err) {
+          return res.json(err);
+        }
 
-      return res.json({ message: 'evaluation supprimée' });
-    },
-  );
+        return res.json({ message: 'evaluation supprimée' });
+      },
+    );
+  }
+  return res.json({ message: 'Access Denied' });
 };
 

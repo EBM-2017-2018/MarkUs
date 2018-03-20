@@ -8,10 +8,6 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
-  points: {
-    type: Number,
-    required: true,
-  },
   format: {
     type: String,
     enum: ['textarea', 'checkboxes'],
