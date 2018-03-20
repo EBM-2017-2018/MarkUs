@@ -18,6 +18,7 @@ class Evaluation extends PureComponent {
       // questions: props.evaluation.questions,
       published: props.evaluation.published,
     };
+    console.log(props.evaluation.published)
   }
 
   handleChange = (event) => {
@@ -37,6 +38,7 @@ class Evaluation extends PureComponent {
   }
 
   render() {
+    console.log(this.state)
       return(
 
           <Paper elevation={4}>

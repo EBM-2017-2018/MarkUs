@@ -104,4 +104,3 @@ module.exports.delete = (req, res) => {
   }
   return res.json({ message: 'Access Denied' });
 };
-
