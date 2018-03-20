@@ -1,4 +1,4 @@
-const User = require('./user');
+const User = require('./api/users/userModel');
 
 const path = require('path');
 

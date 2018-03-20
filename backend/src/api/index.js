@@ -12,5 +12,6 @@ mongoose.connect(process.env.MONGODB_URI);
 
 router.use('/evaluations', require('./evaluations'));
 router.use('/papers', require('./papers'));
+router.use('/users', require('./users'));
 
 module.exports = router;
