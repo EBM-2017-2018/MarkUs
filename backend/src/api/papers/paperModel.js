@@ -12,6 +12,9 @@ const ResponseSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
+  feedbackId: {
+    type: Schema.Types.ObjectId,
+  },
 });
 
 const PaperSchema = new Schema({

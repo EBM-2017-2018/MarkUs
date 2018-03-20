@@ -5,6 +5,7 @@ const router = new Router();
 const evaluationController = require('./evaluationController');
 const questionController = require('./questionController');
 const paperController = require('../papers/paperController');
+const feedbackController = require('../feedbacks/feedbackContoller');
 
 /**
  * @api {get} /evaluations Récupèrer la liste de toutes les évaluations
@@ -297,5 +298,7 @@ router.delete('/:id/questions/:qid', questionController.delete);
  ]
  */
 router.get('/:id/papers', paperController.findAllByEvaluation);
+
+router.get('/:id/questions/:qid/feedback', feedbackController.findByQuestion);
 
 module.exports = router;
