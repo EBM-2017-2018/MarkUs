@@ -8,4 +8,4 @@ router.get('/:id', feedbackController.findOne);
 router.post('/', feedbackController.create);
 router.delete('/:id', feedbackController.delete);
 
-module.exports = router ;
+module.exports = router;
