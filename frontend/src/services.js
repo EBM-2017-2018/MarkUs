@@ -44,7 +44,7 @@ export const publishEvaluation = (id, publishState) => {
     }).then(checkAuthResponse)
 }
 
-export const createEvaluation = (name) => {
+export const createEvaluation = (name, author, group) => {
   return fetch(`${BASE_URL}/evaluations`, {
         headers: getAuthHeaders({
           'Content-Type': 'application/json'
@@ -52,8 +52,8 @@ export const createEvaluation = (name) => {
         method: 'POST',
         body: JSON.stringify({
           name : name,
-          author: 'author',
-          groupClass: 'groupClass'
+          author: author,
+          groupClass: group
         })
     }).then(checkAuthResponse)
     .then(res => res.json())
@@ -68,6 +68,21 @@ export const createQuestion = (evaluationId, content, points) => {
         body: JSON.stringify({
           content : content,
           points: points
+        })
+    })
+    .then(checkAuthResponse)
+    .then(res => res.json())
+}
+
+export const createQuestions = (evaluationId, questions) => {
+  return fetch(`${BASE_URL}/evaluations/${evaluationId}/questions`, {
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
+        method: 'POST',
+        body: JSON.stringify({
+          evalId : evaluationId,
+          questions: questions
         })
     })
     .then(checkAuthResponse)
@@ -97,4 +112,25 @@ export const updateCopy = (id, responses) => {
           responses: responses,
         })
     }).then(checkAuthResponse)
+}
+
+
+export const getUser = () => {
+  // const url = `${BASE_URL}/user`;
+  // return fetch(url, { headers: getAuthHeaders() })
+  //         .then(checkAuthResponse)
+  //         .then(response => response.json())
+}
+
+export const getPromos = () => {
+  const url = 'https://linkapp.ebm.nymous.io/api/promos/listpromos'
+  return fetch(
+          url,
+          {
+            headers: {
+              "Authorization": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJyb2xlIjoiZXR1ZGlhbnQiLCJub20iOiJyb290IiwicHJlbm9tIjoicm9vdCIsImVtYWlsIjoicm9vdEBldHVkaWFudC5mciIsImlhdCI6MTUyMTQwNjI2NX0.X9lTVE4dTi_1PUkojmpHWnJzM_fkrmv-VZPGjhLlV14"
+            }
+          })
+          .then(checkAuthResponse)
+          .then(response => response.json())
 }

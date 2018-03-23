@@ -4,10 +4,10 @@ import {withStyles} from 'material-ui';
 import {Route, withRouter} from 'react-router-dom';
 
 import Home from './Home';
-import FormEvaluation from './evaluation/FormEvaluation';
-import ListEvaluation from './evaluation/ListEvaluation';
+import StepsEvaluation from './evaluation/StepsEvaluation';
 import AnswerQuestion from './question/AnswerQuestion';
 import FormQuestion from './question/FormQuestion';
+import {getUser} from '../services'
 
 const style = {};
 
@@ -17,16 +17,28 @@ class Content extends PureComponent {
     classes: PropTypes.object.isRequired
   };
 
+  constructor(props){
+    super(props);
+    this.state = {
+      user: null
+    };
+  }
+
   static defaultProps = {
     className: ''
   };
+
+  componentWillMount(){
+    const user = getUser()
+    this.setState({user})
+    console.log('u', user)
+  }
 
   render() {
     return (
       <div className={this.props.className}>
         <Route exact path="/" component={Home}/>
-        <Route path="/evaluations/new" component={FormEvaluation}/>
-        <Route path="/evaluations" component={ListEvaluation}/>
+        <Route path="/evaluations/new" component={StepsEvaluation}/>
         <Route path="/:evaluation_id/addquestions" component={FormQuestion}/>
         <Route path="/:evaluation_id/answer" component={AnswerQuestion}/>
       </div>

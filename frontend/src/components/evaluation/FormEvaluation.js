@@ -1,47 +1,84 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import {TextField, Button, withStyles} from 'material-ui';
+import {TextField, withStyles} from 'material-ui';
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl} from 'material-ui/Form';
+import Select from 'material-ui/Select';
 
-import {createEvaluation} from '../../services'
+import {createEvaluation, getPromos} from '../../services'
 
-const styles = {};
+const styles = {
+  input:{
+    width: 400
+  },
+  form:{
+    textAlign: 'left'
+  }
+};
 
 class FormEvaluation extends PureComponent {
-  static propTypes = {
-    classes: PropTypes.object.isRequired
-  };
 
   constructor(props){
     super(props);
     this.state = {
-      name: ''
+      name: '',
+      promo: '',
+      promos: [],
     };
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    createEvaluation(this.state.name)
-      .then(() => {
-        this.setState({name: ''})
-      })
+  async componentDidMount(){
+    let promos = await getPromos()
+    promos = promos.promotions
+    console.log('p', promos)
+    this.setState({promos})
   }
+
+  async handleSubmit (){
+    return await createEvaluation(this.state.name, 'author', this.state.promo);
+  }
+
 
   handleNameChange(event) {
     this.setState({name: (event.target.value)});
   }
 
+  handlePromoChange = event => {
+    this.setState({ promo: event.target.value });
+  };
+
   render() {
+
     return (
-        <form onSubmit={this.handleSubmit}>
-          <TextField name="name" label="Titre de l'évaluation" value={this.state.name} onChange={this.handleNameChange}/>
-          <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
-            Créer
-          </Button>
-        </form>
+          <div>
+            <TextField name="name" style={styles.input} label="Titre de l'évaluation" value={this.state.name} onChange={this.handleNameChange}/>
+            <br />
+            <FormControl>
+              <InputLabel htmlFor="promo">Promo</InputLabel>
+              <Select
+                value={this.state.promo}
+                onChange={this.handlePromoChange}
+                input={<Input name="promotion" id="promo" />}
+                style={styles.input}
+              >
+                <MenuItem value="">
+                  <em>Choisir une promotion</em>
+                </MenuItem>
+                {this.state.promos.map(p => {
+                  return (
+                    <MenuItem value={p._id} key={p._id} >{p.nomPromo}</MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+
+            <br /><br />
+          </div>
     );
   }
 }
-export default withStyles(styles)(FormEvaluation);
+// I deleted the WITHSTYLES NEED HELP
+export default FormEvaluation;

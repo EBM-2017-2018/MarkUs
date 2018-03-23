@@ -1,11 +1,16 @@
 import React, {PureComponent} from 'react';
-import {Typography, Button, Paper, withStyles, Switch} from 'material-ui';
+import {withStyles, Switch, Button} from 'material-ui';
+import { TableCell, TableRow } from 'material-ui/Table';
 
 import {deleteEvaluation, publishEvaluation} from '../../services'
 
 import {Link} from 'react-router-dom';
 
-const styles = {};
+const styles = {
+  tableCell : {
+    textAlign: 'center'
+  }
+};
 
 class Evaluation extends PureComponent {
 
@@ -15,6 +20,7 @@ class Evaluation extends PureComponent {
       id: props.evaluation._id,
       date: props.evaluation.date,
       name: props.evaluation.name,
+      groupClass: props.evaluation.groupClass,
       // questions: props.evaluation.questions,
       published: props.evaluation.published,
     };
@@ -33,29 +39,29 @@ class Evaluation extends PureComponent {
     }
   }
 
-  componentDidMount(){
-    console.log(this.props.id);
-  }
-
   render() {
     console.log(this.state)
       return(
+        <TableRow key={this.state.id}>
+          <TableCell style={styles.tableCell} >{this.state.name}</TableCell>
+          <TableCell style={styles.tableCell} >{this.state.groupClass}</TableCell>
+          <TableCell style={styles.tableCell}>
+            <Link to={`/${this.state.id}/addquestions`}>Ajouter des questions</Link>
+          </TableCell>
 
-          <Paper elevation={4}>
-            <Typography variant="headline" component="h1">
-              {this.state.name}
-              <Switch
-                checked={this.state.published}
-                onChange={this.handleChange}
-              />
-            </Typography>
-            <Button onClick={this.handleDeleteEvaluation(this.state.id)}>
+          <TableCell style={styles.tableCell}>
+            <Switch
+              checked={this.state.published}
+              onChange={this.handleChange}
+            />
+          </TableCell>
+
+          <TableCell style={styles.tableCell}>
+            <Button variant="raised" color="secondary" onClick={this.handleDeleteEvaluation(this.state.id)}>
              Supprimer
             </Button>
-            <Link to={`/${this.state.id}/answer`}>Repondre a une evaluation</Link>
-             |
-            <Link to={`/${this.state.id}/addquestions`}>Ajouter des questions</Link>
-          </Paper>
+          </TableCell>
+        </TableRow>
       )
   }
 }
