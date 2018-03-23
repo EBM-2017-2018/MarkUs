@@ -20,7 +20,6 @@ class Question extends PureComponent {
 
 
   render() {
-    console.log(this.state)
       return(
         <TableRow key={this.state.id}>
           <TableCell style={styles.tableCell} >{this.state.content}</TableCell>

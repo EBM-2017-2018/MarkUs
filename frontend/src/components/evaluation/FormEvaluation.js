@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {TextField, withStyles} from 'material-ui';
+import {TextField} from 'material-ui';
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl} from 'material-ui/Form';

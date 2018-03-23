@@ -28,8 +28,8 @@ class Content extends PureComponent {
     className: ''
   };
 
-  componentWillMount(){
-    const user = getUser()
+  async componentWillMount(){
+    const user = await getUser()
     this.setState({user})
     console.log('u', user)
   }

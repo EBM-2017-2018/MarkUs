@@ -12,6 +12,13 @@ const styles = {
   points:{
     width:100,
   },
+  form:{
+    display: 'flex',
+    justifyContent: 'space-around'
+  },
+  submitButton:{
+    textAlign: 'center'
+  }
 };
 
 class FormEvaluation extends PureComponent {
@@ -28,20 +35,20 @@ class FormEvaluation extends PureComponent {
 
     this.handleContentChange = this.handleContentChange.bind(this);
     this.handlePointsChange = this.handlePointsChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(evalId) {
+  handleSubmit = (evalId) => {
+    console.log('yolo')
     this.state.questions.map(q => {
         return createQuestion(evalId, q.content, q.points)
     })
+    //this.props.match.params.evaluation_id
     //createQuestions(evalId, this.state.questions)
 
   }
 
   addQuestion = () => {
 
-    console.log('state', this.state);
     const question = {
       content: this.state.content,
       points: this.state.points
@@ -55,8 +62,6 @@ class FormEvaluation extends PureComponent {
         points: 0,
         questions: questions}
     })
-
-
   }
 
 
@@ -69,20 +74,25 @@ class FormEvaluation extends PureComponent {
   }
 
   render() {
+    let submitButton;
+    let evaluation_id
+    this.props.match ? evaluation_id = this.props.match.params.evaluation_id : evaluation_id = null;
+    if (evaluation_id) {
+      submitButton = (
+        <Button style={styles.submitButton} variant="raised" color="secondary" onClick={this.handleSubmit}>
+            Enregistrer
+        </Button>
+      )
+    }
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form style={styles.form}>
           <TextField style={styles.question} name="content" label="Question" value={this.state.content} onChange={this.handleContentChange}/>
           <TextField style={styles.points} name="points" type="number" label="Nb de points" value={this.state.points} onChange={this.handlePointsChange}/>
           <Button variant="raised" color="secondary" onClick={this.addQuestion}>
             Ajouter
           </Button>
         </form>
-        {this.state.evaluation_id  &&
-          <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
-            Enregistrer
-          </Button>
-        }
           <Paper>
             <Table>
               <TableHead>
@@ -99,6 +109,7 @@ class FormEvaluation extends PureComponent {
                 })}
               </TableBody>
             </Table>
+            { submitButton }
           </Paper>
       </div>
     );

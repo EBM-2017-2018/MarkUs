@@ -45,8 +45,13 @@ class Evaluation extends PureComponent {
         <TableRow key={this.state.id}>
           <TableCell style={styles.tableCell} >{this.state.name}</TableCell>
           <TableCell style={styles.tableCell} >{this.state.groupClass}</TableCell>
+          <TableCell style={styles.tableCell} >
+            https://markus.ebm.nymous.io/{this.state.id}/answer
+          </TableCell>
           <TableCell style={styles.tableCell}>
-            <Link to={`/${this.state.id}/addquestions`}>Ajouter des questions</Link>
+            <Link to={`/${this.state.id}/addquestions`}>
+              + Questions
+            </Link>
           </TableCell>
 
           <TableCell style={styles.tableCell}>
