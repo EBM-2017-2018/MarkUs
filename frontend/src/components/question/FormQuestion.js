@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import { TextField, Button, Paper} from 'material-ui';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import { Redirect } from 'react-router'
 
 import {createQuestion} from '../../services'
 import Question  from './Question'
@@ -30,7 +31,8 @@ class FormEvaluation extends PureComponent {
       points: 0,
       //format: ''
       evaluation_id: null,
-      questions: []
+      questions: [],
+      fireRedirect: false
     };
 
     this.handleContentChange = this.handleContentChange.bind(this);
@@ -42,6 +44,7 @@ class FormEvaluation extends PureComponent {
     this.state.questions.map(q => {
         return createQuestion(evalId, q.content, q.points)
     })
+    this.setState({ fireRedirect: true })
     //this.props.match.params.evaluation_id
     //createQuestions(evalId, this.state.questions)
 
@@ -59,7 +62,7 @@ class FormEvaluation extends PureComponent {
       questions.push(question)
       return {
         content: '',
-        points: 0,
+        points: 1,
         questions: questions}
     })
   }
@@ -75,7 +78,9 @@ class FormEvaluation extends PureComponent {
 
   render() {
     let submitButton;
-    let evaluation_id
+    let evaluation_id;
+    const { fireRedirect } = this.state.fireRedirect;
+
     this.props.match ? evaluation_id = this.props.match.params.evaluation_id : evaluation_id = null;
     if (evaluation_id) {
       submitButton = (
@@ -110,6 +115,9 @@ class FormEvaluation extends PureComponent {
               </TableBody>
             </Table>
             { submitButton }
+            {fireRedirect && (
+               <Redirect to={'/'}/>
+             )}
           </Paper>
       </div>
     );

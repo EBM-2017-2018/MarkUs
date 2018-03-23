@@ -5,6 +5,7 @@ import { Redirect } from 'react-router'
 
 import {createCopy, getEvaluation, updateCopy} from '../../services'
 
+const user = JSON.parse(sessionStorage.getItem('user'));
 
 const styles = {};
 
@@ -23,7 +24,7 @@ class AnswerQuestion extends PureComponent {
       name: '',
       questions: [],
       responses:[],
-      author: 'auteur Par defaut',
+      author: user.id,
       fireRedirect: false
     };
   }
@@ -67,7 +68,7 @@ class AnswerQuestion extends PureComponent {
   render() {
     const { from } = this.props.location.state || '/'
     const { fireRedirect } = this.state
-    
+
     return (
       <div>
         <form action="/evaluations">
@@ -86,7 +87,7 @@ class AnswerQuestion extends PureComponent {
           </Button>
         </form>
         {fireRedirect && (
-          <Redirect to={from || '/evaluations'}/>
+          <Redirect to={from || '/'}/>
         )}
       </div>
       )

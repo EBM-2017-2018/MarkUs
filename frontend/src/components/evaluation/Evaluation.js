@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {withStyles, Switch, Button, Icon} from 'material-ui';
 import { TableCell, TableRow } from 'material-ui/Table';
 
-import {deleteEvaluation, publishEvaluation} from '../../services'
+import {publishEvaluation} from '../../services'
 
 import {Link} from 'react-router-dom';
 
