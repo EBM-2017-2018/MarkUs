@@ -116,10 +116,12 @@ export const updateCopy = (id, responses) => {
 
 
 export const getUser = () => {
-  // const url = `${BASE_URL}/user`;
-  // return fetch(url, { headers: getAuthHeaders() })
-  //         .then(checkAuthResponse)
-  //         .then(response => response.json())
+  const url = `${BASE_URL}/users/`;
+  return fetch(   url,
+                { headers: getAuthHeaders() }
+              )
+          .then(checkAuthResponse)
+          .then(response => response.json())
 }
 
 export const getPromos = () => {

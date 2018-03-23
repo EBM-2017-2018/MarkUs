@@ -28,10 +28,11 @@ class Content extends PureComponent {
     className: ''
   };
 
-  componentWillMount(){
-    const user = getUser()
+  async componentWillMount(){
+    //TODO Attention premier login, probleme de synchro, rien dans home/sessionStorage
+    const user = await getUser()
     this.setState({user})
-    console.log('u', user)
+    sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   render() {

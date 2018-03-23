@@ -35,6 +35,18 @@ class ListEvaluation extends PureComponent {
     })
   }
 
+  updateListState = (index) => {
+    //TODO PROBLEME SUPPRIME TOUJORUS LE DERNIER
+    console.log('yolo', index)
+    console.log('eval1', this.state.evaluations)
+    this.setState(state => {
+      const evaluations = state.evaluations.slice();
+      evaluations.splice(index, 1)
+      console.log('eval2', evaluations)
+      return {evaluations}
+    })
+  }
+
   render() {
     return(
       <Paper>
@@ -43,15 +55,16 @@ class ListEvaluation extends PureComponent {
             <TableRow>
               <TableCell style={styles.tableCell}>Titre</TableCell>
               <TableCell style={styles.tableCell}>Groupe</TableCell>
+              <TableCell style={styles.tableCell}>Partager</TableCell>
               <TableCell style={styles.tableCell} numeric>Modifier</TableCell>
               <TableCell style={styles.tableCell} numeric>Publique</TableCell>
               <TableCell style={styles.tableCell} numeric>Supprimer</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.evaluations.map(e => {
+            {this.state.evaluations.map((e, index) => {
               return (
-                <Evaluation evaluation={e} />
+                <Evaluation key={index} updateListState={this.updateListState} index={index} evaluation={e} />
               );
             })}
           </TableBody>

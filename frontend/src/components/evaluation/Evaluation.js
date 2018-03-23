@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {withStyles, Switch, Button} from 'material-ui';
+import {withStyles, Switch, Button, Icon} from 'material-ui';
 import { TableCell, TableRow } from 'material-ui/Table';
 
 import {deleteEvaluation, publishEvaluation} from '../../services'
@@ -24,7 +24,6 @@ class Evaluation extends PureComponent {
       // questions: props.evaluation.questions,
       published: props.evaluation.published,
     };
-    console.log(props.evaluation.published)
   }
 
   handleChange = (event) => {
@@ -33,20 +32,27 @@ class Evaluation extends PureComponent {
     publishEvaluation(this.state.id, event.target.checked)
   };
 
-  handleDeleteEvaluation (evaluationId) {
+  handleDeleteEvaluation = () => {
     return () => {
-      deleteEvaluation(evaluationId)
+      // deleteEvaluation(this.state.id)
+      this.props.updateListState(this.props.index)
     }
   }
 
   render() {
-    console.log(this.state)
       return(
-        <TableRow key={this.state.id}>
+        <TableRow>
           <TableCell style={styles.tableCell} >{this.state.name}</TableCell>
           <TableCell style={styles.tableCell} >{this.state.groupClass}</TableCell>
+          <TableCell style={styles.tableCell} >
+            {this.state.id}
+          </TableCell>
           <TableCell style={styles.tableCell}>
-            <Link to={`/${this.state.id}/addquestions`}>Ajouter des questions</Link>
+            <Link to={`/${this.state.id}/addquestions`}>
+              <Icon color="action">
+                add_circle
+              </Icon>
+            </Link>
           </TableCell>
 
           <TableCell style={styles.tableCell}>
@@ -57,8 +63,10 @@ class Evaluation extends PureComponent {
           </TableCell>
 
           <TableCell style={styles.tableCell}>
-            <Button variant="raised" color="secondary" onClick={this.handleDeleteEvaluation(this.state.id)}>
-             Supprimer
+            <Button variant="raised" color="secondary" onClick={this.handleDeleteEvaluation}>
+              <Icon color="action">
+                close
+              </Icon>
             </Button>
           </TableCell>
         </TableRow>
