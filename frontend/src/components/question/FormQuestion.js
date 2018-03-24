@@ -1,33 +1,73 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import {Typography, TextField, Button, withStyles} from 'material-ui';
+import { TextField, Button, Paper} from 'material-ui';
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import { Redirect } from 'react-router'
 
-import ListQuestion from './ListQuestion';
 import {createQuestion} from '../../services'
+import Question  from './Question'
 
-const styles = {};
+const styles = {
+  question:{
+    width: 500
+  },
+  points:{
+    width:100,
+  },
+  form:{
+    display: 'flex',
+    justifyContent: 'space-around'
+  },
+  submitButton:{
+    textAlign: 'center'
+  }
+};
 
 class FormEvaluation extends PureComponent {
-  static propTypes = {
-    classes: PropTypes.object.isRequired
-  };
 
   constructor(props){
     super(props);
     this.state = {
       content: '',
-      points: 0
+      points: 0,
+      //format: ''
+      evaluation_id: null,
+      questions: [],
+      fireRedirect: false
     };
 
     this.handleContentChange = this.handleContentChange.bind(this);
     this.handlePointsChange = this.handlePointsChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    createQuestion(this.props.match.params.evaluation_id, this.state.content, this.state.points)
+  handleSubmit = (evalId) => {
+    console.log('yolo')
+    this.state.questions.map(q => {
+        return createQuestion(evalId, q.content, q.points)
+    })
+    this.setState({ fireRedirect: true })
+    //this.props.match.params.evaluation_id
+    //createQuestions(evalId, this.state.questions)
+
   }
+
+  addQuestion = () => {
+
+    const question = {
+      content: this.state.content,
+      points: this.state.points
+    }
+
+    this.setState(state => {
+      const questions = state.questions.slice();
+      questions.push(question)
+      return {
+        content: '',
+        points: 1,
+        questions: questions}
+    })
+  }
+
+
 
   handleContentChange(event) {
     this.setState({content: (event.target.value)});
@@ -37,19 +77,52 @@ class FormEvaluation extends PureComponent {
   }
 
   render() {
+    let submitButton;
+    let evaluation_id;
+    const { fireRedirect } = this.state.fireRedirect;
+
+    this.props.match ? evaluation_id = this.props.match.params.evaluation_id : evaluation_id = null;
+    if (evaluation_id) {
+      submitButton = (
+        <Button style={styles.submitButton} variant="raised" color="secondary" onClick={this.handleSubmit}>
+            Enregistrer
+        </Button>
+      )
+    }
     return (
       <div>
-        <Typography variant="headline">Ajoutez des questions à l'évaluation</Typography>
-        <form onSubmit={this.handleSubmit}>
-          <TextField name="content" label="Question" value={this.state.content} onChange={this.handleContentChange}/>
-          <TextField name="points" type="number" label="Nb de points" value={this.state.points} onChange={this.handlePointsChange}/>
-          <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
-            Créer
+        <form style={styles.form}>
+          <TextField style={styles.question} name="content" label="Question" value={this.state.content} onChange={this.handleContentChange}/>
+          <TextField style={styles.points} name="points" type="number" label="Nb de points" value={this.state.points} onChange={this.handlePointsChange}/>
+          <Button variant="raised" color="secondary" onClick={this.addQuestion}>
+            Ajouter
           </Button>
         </form>
-        <ListQuestion evaluation_id={this.props.match.params.evaluation_id}/>
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={styles.tableCell}>Question</TableCell>
+                  <TableCell style={styles.tableCell}>Nombre de points</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.state.questions.map((q, index) => {
+                  return (
+                    <Question key={index} question={q} />
+                  );
+                })}
+              </TableBody>
+            </Table>
+            { submitButton }
+            {fireRedirect && (
+               <Redirect to={'/'}/>
+             )}
+          </Paper>
       </div>
     );
   }
 }
-export default withStyles(styles)(FormEvaluation);
+
+// I deleted the WITHSTYLES NEED HELP
+export default FormEvaluation;
