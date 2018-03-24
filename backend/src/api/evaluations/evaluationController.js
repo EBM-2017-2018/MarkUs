@@ -3,8 +3,15 @@ const Evaluation = require('./evaluationModel');
 module.exports = {};
 
 module.exports.findAll = (req, res) => {
-  if (req.user.role === 'administrateur' || req.user.role === 'intervenant') {
+  if (req.user.role === 'administrateur') {
     Evaluation.find({}, (err, evaluations) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.json(evaluations);
+    });
+  } else if (req.user.role === 'intervenant') {
+    Evaluation.find({ author: req.user.username }, (err, evaluations) => {
       if (err) {
         return res.send(err);
       }
@@ -27,7 +34,7 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      if (req.user.role === 'administrateur' || req.user.role === 'intervenant' || evaluation.published) {
+      if (req.user.role === 'administrateur' || req.user.username === evaluation.author || evaluation.published) {
         return res.json(evaluation);
       }
       return res.json({ message: 'Access Denied' });
@@ -55,14 +62,14 @@ module.exports.update = (req, res) => {
       name,
       published,
       questions,
-      groupClass,
+      groupClass: promo,
     } = req.body;
     const set = {};
     if (typeof (name) === 'string') {
       set.name = name;
     }
-    if (typeof (groupClass) === 'string') {
-      set.groupClass = groupClass;
+    if (typeof (promo) === 'string') {
+      set.groupClass = promo;
     }
     if (typeof (published) === 'boolean') {
       set.published = published;
@@ -73,6 +80,7 @@ module.exports.update = (req, res) => {
     return Evaluation.update(
       {
         _id: req.params.id,
+        author: req.user.username,
       },
       {
         $set: set,
@@ -92,7 +100,10 @@ module.exports.update = (req, res) => {
 module.exports.delete = (req, res) => {
   if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
     Evaluation.deleteOne(
-      { _id: req.params.id },
+      {
+        _id: req.params.id,
+        author: req.user.username,
+      },
       (err) => {
         if (err) {
           return res.json(err);
