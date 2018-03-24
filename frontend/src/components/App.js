@@ -18,8 +18,10 @@ const styles = theme => ({
     }
   },
   content: {
-    textAlign: 'center',
+    textAlign: 'left',
     paddingTop: theme.spacing.unit * 5,
+    marginLeft: 100,
+    marginRight: 100,
   }
 });
 
