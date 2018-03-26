@@ -5,7 +5,8 @@ const router = new Router();
 const evaluationController = require('./evaluationController');
 const questionController = require('./questionController');
 const paperController = require('../papers/paperController');
-const feedbackController = require('../feedbacks/feedbackContoller');
+const responseController = require('../papers/responseController');
+const feedbackController = require('../feedbacks/feedbackController');
 
 /**
  * @api {get} /evaluations Récupèrer la liste de toutes les évaluations
@@ -21,6 +22,8 @@ const feedbackController = require('../feedbacks/feedbackContoller');
      "questions": [],
      "_id": "5a9fe9ac7dce47135f250cac",
      "name": "Evaluation 1",
+     "author": "prof",
+     "promo":"une promo",
      "__v": 0
  },
  {
@@ -28,6 +31,8 @@ const feedbackController = require('../feedbacks/feedbackContoller');
      "questions": [],
      "_id": "5a9fe9b17dce47135f250cad",
      "name": "Evaluation 2",
+      "author": "prof",
+     "promo":"une promo",
      "__v": 0
  }
  ]
@@ -51,7 +56,8 @@ router.get('/', evaluationController.findAll);
     "questions": [],
     "_id": "5aa00cbddfc165256122dccc",
     "name": "Une évaluation particulière",
-    "groupClass": "Un ensemble d'étudiant",
+    "author":"un prof",
+    "promo": "Un ensemble d'étudiant",
     "__v": 0
   }
  */
@@ -67,7 +73,9 @@ router.get('/:id', evaluationController.findOne);
  *
  * @apiParam {String} name nom de l'évaluation à insérer
  *
- * @apiParam {String} groupClass groupe d'élèves visé par l'évaluation
+ * @apiParam {String} promo groupe d'élèves visé par l'évaluation
+ *
+ * @apiParam {String} author username de l'auteur
  *
  * @apiParam {[Questions]} [questions] tableau de questions de l'évaluation. Si absent, sera
  * initialisé vide. Une question dont le format ne sera pas précisé aura par défaut un format
@@ -76,7 +84,7 @@ router.get('/:id', evaluationController.findOne);
  * @apiParamExample  {json}  Request-Example:
  *    {
  *    name: "Nouvelle éval",
- *    groupClass: "EBM_17_18",
+ *    promo: "EBM_17_18",
  *    questions: [
    *    { content:"Est-ce une question ?",
    *      points : 3,
@@ -84,7 +92,8 @@ router.get('/:id', evaluationController.findOne);
    *    },
    *    { content:"Est-ce une autre question ?",
    *      points : 2
-   *    }]
+   *    }],
+   *    "author":"TB"
  *    }
  *
  *
@@ -108,7 +117,7 @@ router.post('/', evaluationController.create);
  *
  * @apiParam {String} name nom de l'évaluation à insérer
  *
- * @apiParam {String} groupClass groupe d'élèves visé par l'évaluation
+ * @apiParam {String} promo groupe d'élèves visé par l'évaluation
  *
  * @apiParam {[Questions]} [questions] tableau de questions de l'évaluation. Si absent, sera
  * initialisé vide. Une question dont le format ne sera pas précisé aura par défaut un format
@@ -121,7 +130,7 @@ router.post('/', evaluationController.create);
  * @apiParamExample  {json}  Request-Example:
  *    {
  *    name: "Nouvelle éval",
- *    groupClass: "EBM_17_18",
+ *    promo: "EBM_17_18",
  *    author:"professeur",
  *    questions: [
    *    { content:"Est-ce une question ?",
@@ -299,6 +308,23 @@ router.delete('/:id/questions/:qid', questionController.delete);
  */
 router.get('/:id/papers', paperController.findAllByEvaluation);
 
+/**
+ * @api {get} /evaluations/:id/questions/:qid/feedback
+ * Récupère les feedbacks associés à une question identifiée par son Id
+ * @apiName GetFeedbacksByQuestionId
+ * @apiGroup Feedbacks
+ * @apiDescription Une requête qui renvoit une liste de feedback
+ * pour une question donnée identifiée par son Id
+ * pour une évaluation donnée identifiée par son Id
+ *
+ * @apiParam  {String} id   ID de l'évaluation dont il faut renvoyer la question
+ * @apiParam  {String} qid   ID de la question dont il faut renvoyer les feedbacks
+ * @apiParamExample  {String}  Request-Example:
+ *    id: 5aa00cbddfc165256122dccc
+ *    qid: 5aa00cbddfc165256122dccc
+ */
 router.get('/:id/questions/:qid/feedback', feedbackController.findByQuestion);
+
+router.get('/:id/questions/:qid/responses', responseController.findByQuestion);
 
 module.exports = router;
