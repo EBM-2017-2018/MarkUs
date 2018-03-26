@@ -1,4 +1,5 @@
 const Evaluation = require('./evaluationModel');
+const { isInPromo } = require('../../services/userPermissionsService');
 
 module.exports = {};
 
@@ -22,10 +23,18 @@ module.exports.findAll = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      return res.json(evaluations);
+      const evaluationsToSend = [];
+      evaluations.forEach((evaluation) => {
+        if (isInPromo(evaluation.promo, req.user, req.header.Authorization)) {
+          evaluationsToSend.push(evaluation);
+        }
+      });
+      return res.json(evaluationsToSend);
     });
   }
+  return res.json('Access Denied');
 };
+
 
 module.exports.findOne = (req, res) => {
   Evaluation.findOne(
@@ -34,7 +43,7 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      if (req.user.role === 'administrateur' || req.user.username === evaluation.author || evaluation.published) {
+      if (req.user.role === 'administrateur' || req.user.username === evaluation.author || (evaluation.published && isInPromo(evaluation.promo, req.user, req.header.Authorization))) {
         return res.json(evaluation);
       }
       return res.json({ message: 'Access Denied' });
@@ -62,14 +71,14 @@ module.exports.update = (req, res) => {
       name,
       published,
       questions,
-      groupClass: promo,
+      promo,
     } = req.body;
     const set = {};
     if (typeof (name) === 'string') {
       set.name = name;
     }
     if (typeof (promo) === 'string') {
-      set.groupClass = promo;
+      set.promo = promo;
     }
     if (typeof (published) === 'boolean') {
       set.published = published;
@@ -99,7 +108,7 @@ module.exports.update = (req, res) => {
 
 module.exports.delete = (req, res) => {
   if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
-    Evaluation.deleteOne(
+    return Evaluation.deleteOne(
       {
         _id: req.params.id,
         author: req.user.username,

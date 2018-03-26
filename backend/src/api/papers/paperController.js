@@ -1,23 +1,49 @@
 const Paper = require('./paperModel');
+const Evaluation = require('../evaluations/evaluationModel');
+const { isResponsableOfPromo } = require('../../services/userPermissionsService');
 
 module.exports = {};
 
 module.exports.findAll = (req, res) => {
-  Paper.find({}, (err, papers) => {
-    if (err) {
-      return res.send(err);
-    }
-    return res.json(papers);
-  });
+  if (req.user.role === 'admin') {
+    Paper.find({}, (err, papers) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.json(papers);
+    });
+  }
+  return res.json({ message: 'Access Denied' });
 };
 
 module.exports.findAllByEvaluation = (req, res) => {
-  Paper.find({ evaluationId: req.params.id }, (err, papers) => {
+  let authorizedUser;
+  Evaluation.findOne({ _id: req.params.id }, (err, evaluation) => {
     if (err) {
       return res.send(err);
     }
-    return res.json(papers);
+
+    authorizedUser = evaluation.author;
+    return true;
   });
+  if (req.user.role === 'administrateur' || req.user.username === authorizedUser) {
+    Paper.find({ evaluationId: req.params.id }, (err, papers) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.json(papers);
+    });
+  } else {
+    Paper.find({
+      evaluationId: req.params.id,
+      author: req.user.username,
+    }, (err, papers) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.json(papers);
+    });
+  }
 };
 
 module.exports.findOne = (req, res) => {
@@ -27,7 +53,16 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      return res.json(paper);
+      Evaluation.findOne({ _id: paper.evaluationId }, (error, evaluation) => {
+        if (error) {
+          return res.send(error);
+        }
+        if (req.user.role === 'administrateur' || isResponsableOfPromo(evaluation.promo, req.user, req.header.Authorization) || paper.author === req.user.username) {
+          return res.json(paper);
+        }
+        return res.json({ message: 'Access Denied' });
+      });
+      return res.json({ message: 'Couldn\'t find evaluation' });
     },
   );
 };

@@ -1,4 +1,5 @@
 const Evaluation = require('./evaluationModel');
+const { isInPromo } = require('../../services/userPermissionsService');
 
 module.exports = {};
 
@@ -10,7 +11,7 @@ module.exports.findAll = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      if (userRole === 'administrateur' || username === evaluation.author || evaluation.published) {
+      if (userRole === 'administrateur' || username === evaluation.author || (evaluation.published && isInPromo(evaluation.promo, req.user, req.header.Authorization))) {
         return res.json(evaluation.questions);
       }
       return res.json({ message: 'Access Denied' });
@@ -29,7 +30,7 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      if (req.user.role === 'administrateur' || req.user.username === 'intervant' || evaluation.published) {
+      if (req.user.role === 'administrateur' || req.user.username === 'intervant' || (evaluation.published && isInPromo(evaluation.promo, req.user, req.header.Authorization))) {
         return res.json(evaluation.questions[0]);
       }
       return res.json({ message: 'Access Denied' });
