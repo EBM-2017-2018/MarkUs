@@ -24,8 +24,8 @@ const EvaluationSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  groupClass: {
-    type: String,
+  promo: {
+    type: Schema.Types.ObjectId,
     required: true,
   },
   author: {

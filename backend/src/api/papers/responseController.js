@@ -2,6 +2,19 @@ const Paper = require('./paperModel');
 
 module.exports = {};
 
+module.exports.findByQuestion = (req, res) => {
+  Paper.find({ evaluationId: req.params.id }, (err, papers) => {
+    const responses = [];
+    if (err) {
+      return res.send(err);
+    }
+    papers.forEach((paper) => {
+      responses.push(paper.responses(paper.responses.find(req.params.qid)));
+    });
+    return res.json(responses);
+  });
+};
+
 module.exports.findAll = (req, res) => {
   Paper.findOne(
     { _id: req.params.id },
@@ -56,16 +69,21 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.update = (req, res) => {
-  const { content } = req.body;
+  const { content, feedbackId } = req.body;
+  const set = {};
+  if (typeof (content) === 'string') {
+    set.content = content;
+  }
+  if (typeof (feedbackId) === 'string') {
+    set.feedbackId = feedbackId;
+  }
   Paper.update(
     {
       _id: req.params.id,
       'responses._id': req.params.rid,
     },
     {
-      $set: {
-        'responses.$.content': content,
-      },
+      $set: set,
     },
     { multi: true },
     (err) => {
