@@ -75,7 +75,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"date\": \"2018-03-07T16:01:01.994Z\",\n    \"questions\": [],\n    \"_id\": \"5aa00cbddfc165256122dccc\",\n    \"name\": \"Une évaluation particulière\",\n    \"groupClass\": \"Un ensemble d'étudiant\",\n    \"__v\": 0\n  }",
+          "content": "{\n    \"date\": \"2018-03-07T16:01:01.994Z\",\n    \"questions\": [],\n    \"_id\": \"5aa00cbddfc165256122dccc\",\n    \"name\": \"Une évaluation particulière\",\n    \"author\":\"un prof\",\n    \"promo\": \"Un ensemble d'étudiant\",\n    \"__v\": 0\n  }",
           "type": "html"
         }
       ]
@@ -100,7 +100,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n{\n     \"date\": \"2018-03-07T13:31:24.528Z\",\n     \"questions\": [],\n     \"_id\": \"5a9fe9ac7dce47135f250cac\",\n     \"name\": \"Evaluation 1\",\n     \"__v\": 0\n },\n {\n     \"date\": \"2018-03-07T13:31:29.728Z\",\n     \"questions\": [],\n     \"_id\": \"5a9fe9b17dce47135f250cad\",\n     \"name\": \"Evaluation 2\",\n     \"__v\": 0\n }\n ]",
+          "content": "[\n{\n     \"date\": \"2018-03-07T13:31:24.528Z\",\n     \"questions\": [],\n     \"_id\": \"5a9fe9ac7dce47135f250cac\",\n     \"name\": \"Evaluation 1\",\n     \"author\": \"prof\",\n     \"promo\":\"une promo\",\n     \"__v\": 0\n },\n {\n     \"date\": \"2018-03-07T13:31:29.728Z\",\n     \"questions\": [],\n     \"_id\": \"5a9fe9b17dce47135f250cad\",\n     \"name\": \"Evaluation 2\",\n      \"author\": \"prof\",\n     \"promo\":\"une promo\",\n     \"__v\": 0\n }\n ]",
           "type": "html"
         }
       ]
@@ -135,8 +135,15 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "groupClass",
+            "field": "promo",
             "description": "<p>groupe d'élèves visé par l'évaluation</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "author",
+            "description": "<p>username de l'auteur</p>"
           },
           {
             "group": "Parameter",
@@ -150,7 +157,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\nname: \"Nouvelle éval\",\ngroupClass: \"EBM_17_18\",\nquestions: [\n{ content:\"Est-ce une question ?\",\n  points : 3,\n  format : \"checkboxes\"\n},\n{ content:\"Est-ce une autre question ?\",\n  points : 2\n}]\n}",
+          "content": "{\nname: \"Nouvelle éval\",\npromo: \"EBM_17_18\",\nquestions: [\n{ content:\"Est-ce une question ?\",\n  points : 3,\n  format : \"checkboxes\"\n},\n{ content:\"Est-ce une autre question ?\",\n  points : 2\n}],\n\"author\":\"TB\"\n}",
           "type": "json"
         }
       ]
@@ -194,7 +201,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "groupClass",
+            "field": "promo",
             "description": "<p>groupe d'élèves visé par l'évaluation</p>"
           },
           {
@@ -223,7 +230,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\nname: \"Nouvelle éval\",\ngroupClass: \"EBM_17_18\",\nauthor:\"professeur\",\nquestions: [\n{ content:\"Est-ce une question ?\",\n  points : 3,\n  format : \"checkboxes\"\n},\n{ content:\"Est-ce une autre question ?\",\n  points : 2\n}]\n},\npublished : true",
+          "content": "{\nname: \"Nouvelle éval\",\npromo: \"EBM_17_18\",\nauthor:\"professeur\",\nquestions: [\n{ content:\"Est-ce une question ?\",\n  points : 3,\n  format : \"checkboxes\"\n},\n{ content:\"Est-ce une autre question ?\",\n  points : 2\n}]\n},\npublished : true",
           "type": "json"
         }
       ]
@@ -234,6 +241,178 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost:4000/api/evaluations/:id"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/feedbacks",
+    "title": "Crée un feedback",
+    "name": "DeleteFeedbackById",
+    "group": "Feedback",
+    "description": "<p>Crée un feedback</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "evaluationId",
+            "description": "<p>ID de l'évaluation associée au feedback</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questionId",
+            "description": "<p>ID de la question associée au feedback</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "points",
+            "description": "<p>nombre de points associés à ce feedback</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>intitulé du feedback</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\nevaluationId: '5aa00cbddfc165256122dccc',\nquestionId: '5aa00cbddfc165256122dccc',\npoints: 2,\ncontent: 'Commentaire sur la réponse',\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/feedbacks/index.js",
+    "groupTitle": "Feedback",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/feedbacks"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/feedbacks/:id",
+    "title": "Supprime un feedback identifié par son Id",
+    "name": "DeleteFeedbackById",
+    "group": "Feedback",
+    "description": "<p>Supprime le feedback identifié par son Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID du feedback</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "id: 5aa00cbddfc165256122dccc,",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/feedbacks/index.js",
+    "groupTitle": "Feedback",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/feedbacks/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/feedbacks/:id",
+    "title": "Récupère un feedback identifié par son Id",
+    "name": "GetFeedbackById",
+    "group": "Feedback",
+    "description": "<p>Renvoie le feedback demandé par Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID du feedback</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "id: 5aa00cbddfc165256122dccc,",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/feedbacks/index.js",
+    "groupTitle": "Feedback",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/feedbacks/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/evaluations/:id/questions/:qid/feedback",
+    "title": "Récupère les feedbacks associés à une question identifiée par son Id",
+    "name": "GetFeedbacksByQuestionId",
+    "group": "Feedbacks",
+    "description": "<p>Une requête qui renvoit une liste de feedback pour une question donnée identifiée par son Id pour une évaluation donnée identifiée par son Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID de l'évaluation dont il faut renvoyer la question</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "qid",
+            "description": "<p>ID de la question dont il faut renvoyer les feedbacks</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "id: 5aa00cbddfc165256122dccc\nqid: 5aa00cbddfc165256122dccc",
+          "type": "String"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/evaluations/index.js",
+    "groupTitle": "Feedbacks",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/evaluations/:id/questions/:qid/feedback"
       }
     ]
   },
@@ -494,6 +673,22 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost:4000/api/evaluations/:id/questions"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/users",
+    "title": "Renvoie les informations de l'user",
+    "name": "GetUser",
+    "group": "User",
+    "description": "<p>Renvoie les infos de l'utilisateur mises à dispositions par LinkApp</p>",
+    "version": "0.0.0",
+    "filename": "src/api/users/index.js",
+    "groupTitle": "User",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4000/api/users"
       }
     ]
   }
