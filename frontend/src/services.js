@@ -114,16 +114,6 @@ export const updateCopy = (id, responses) => {
     }).then(checkAuthResponse)
 }
 
-
-export const getUser = () => {
-  const url = `${BASE_URL}/users/`;
-  return fetch(   url,
-                { headers: getAuthHeaders() }
-              )
-          .then(checkAuthResponse)
-          .then(response => response.json())
-}
-
 export const getPromos = () => {
   const url = 'https://linkapp.ebm.nymous.io/api/promos/listpromos'
   return fetch(
@@ -133,6 +123,14 @@ export const getPromos = () => {
               "Authorization": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJyb2xlIjoiZXR1ZGlhbnQiLCJub20iOiJyb290IiwicHJlbm9tIjoicm9vdCIsImVtYWlsIjoicm9vdEBldHVkaWFudC5mciIsImlhdCI6MTUyMTQwNjI2NX0.X9lTVE4dTi_1PUkojmpHWnJzM_fkrmv-VZPGjhLlV14"
             }
           })
+          .then(checkAuthResponse)
+          .then(response => response.json())
+}
+
+export const getAnswer = (evalId, questionId) => {
+  const url = `${BASE_URL}/evaluations/${evalId}/questions/${questionId}/responses`;
+  return fetch(url, { headers: getAuthHeaders() })
+          .then(console.log(getAuthHeaders()))
           .then(checkAuthResponse)
           .then(response => response.json())
 }

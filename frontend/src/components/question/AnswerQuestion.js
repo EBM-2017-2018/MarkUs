@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import {TextField, Button, Typography, withStyles} from 'material-ui';
 import { Redirect } from 'react-router'
 
+import { getUser } from "../UserManager";
 import {createCopy, getEvaluation, updateCopy} from '../../services'
 
-const user = JSON.parse(sessionStorage.getItem('user'));
+const user = getUser()
 
 const styles = {};
 
@@ -31,6 +32,7 @@ class AnswerQuestion extends PureComponent {
 
   async componentDidMount(){
     const evaluation = await getEvaluation(this.props.match.params.evaluation_id)
+    // TODO RESOUDRE BUG DU ACCESS DENIED
     console.log("e", evaluation)
     this.setState({
       date: evaluation.date,
@@ -39,6 +41,7 @@ class AnswerQuestion extends PureComponent {
       name: evaluation.name,
       questions: evaluation.questions
     })
+    // TODO CREATE OR FIND COPY
     createCopy(evaluation, this.state.author)
       .then(response => {
         this.setState({
