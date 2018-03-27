@@ -73,7 +73,6 @@ class FormEvaluation extends PureComponent {
   render() {
     let submitButton;
     let evaluation_id;
-    const { fireRedirect } = this.state.fireRedirect;
 
     this.props.match ? evaluation_id = this.props.match.params.evaluation_id : evaluation_id = null;
     if (evaluation_id) {
