@@ -12,12 +12,14 @@ Nathan
 
 [![codecov](https://codecov.io/gh/EBM-2017-2018/EBM-boilerplate/branch/master/graph/badge.svg)](https://codecov.io/gh/EBM-2017-2018/EBM-boilerplate)
 
-Ce dépôt fournit les éléments de base pour les projets du fil rouge.
+Ce dépôt contient les sources du projet MarkUs du fil rouge EBM 2017/2018
 
 Il comprend :
 - un backend en NodeJS et Express
 - un frontend en React
 - des tests automatiques grâce à Travis
+
+Les informations ci-dessous sont communes aux différents projets EBM 2017/2018. Une partie spécifique à MarkUs se trouve plus pas sur ce README
 
 ## Mode d'emploi
 
@@ -145,3 +147,8 @@ Si ce n'est pas le cas, et qu'au bout de longues minutes d'attente il ne se pass
 
 **A noter :** le déploiement s'effectue AUTOMATIQUEMENT (eh ouais !) à chaque push ou fusion de pull request sur la branche master.
 
+# Specifique à MarkUs
+===============
+De l'utilisateur et des ses différentes caractéristiques dépendent les requête à l'api et l'affichage des différentes vues.
+
+A cette adresse: https://ebm-2017-2018.github.io/MarkUs/ tu trouveras une documentation de l'api utilisée. Attention, cela requiert d'avoir un token d'accès délivré par LinkApp.
