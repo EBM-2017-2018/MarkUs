@@ -1,32 +1,34 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
+
 
 module.exports = {};
 
 
-module.exports.isInPromo = (promo, user, auth) => {
-  console.log('isInPromo');
-  fetch(`linkapp.ebm.nymous.io/api/listpromosof/${user.username}`, {
+module.exports.isInPromo = (promo, user, auth) =>
+  fetch(`https://linkapp.ebm.nymous.io/api/promos/listpromosof/${user.username}`, {
     headers: {
-      Authorization: auth,
+      Authorization: `${auth}`,
       'Content-Type': 'application/json',
     },
-    method: 'GET',
   })
-    .then(res => res.json()
-      .promotions
-      .find(element => element.nomPromo === promo) !== undefined);
-};
+    .then(res => res.json())
+    .then((res) => {
+      const test = res
+        .promotions
+        .find(element => element.nomPromo === promo) !== undefined;
+      return test;
+    });
 
-module.exports.isResponsableOfPromo = (promo, user, auth) => {
-  console.log('isResponsableOfPromo');
-  fetch(`linkapp.ebm.nymous.io/api/promos/${promo}`, {
+
+module.exports.isResponsableOfPromo = (promo, user, auth) =>
+  fetch(`https://linkapp.ebm.nymous.io/api/promos/${promo}`, {
     headers: {
-      Authorization: auth,
+      Authorization: `${auth}`,
       'Content-Type': 'application/json',
     },
     method: 'GET',
   })
-    .then(res => res.json()
+    .then(res => res.json())
+    .then(res => res
       .promotion
       .responsable === user.username);
-};
