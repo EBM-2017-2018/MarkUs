@@ -66,9 +66,6 @@ class FormEvaluation extends PureComponent {
   handleContentChange(event) {
     this.setState({content: (event.target.value)});
   }
-  handlePointsChange(event) {
-    this.setState({points: (event.target.value)});
-  }
 
   render() {
     let submitButton;
@@ -91,7 +88,6 @@ class FormEvaluation extends PureComponent {
       <div>
         <form style={styles.form}>
           <TextField style={styles.question} name="content" label="Question" value={this.state.content} onChange={this.handleContentChange}/>
-          <TextField style={styles.points} name="points" type="number" label="Nb de points" value={this.state.points} onChange={this.handlePointsChange}/>
           <Button variant="raised" color="secondary" onClick={this.addQuestion}>
             Ajouter
           </Button>

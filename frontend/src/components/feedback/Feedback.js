@@ -12,6 +12,9 @@ const styles = {
   buttons:{
     display:'flex',
     justifyContent:'space-around'
+  },
+  iz:{
+    fontSize:10
   }
 };
 
@@ -46,7 +49,9 @@ class Feedback extends PureComponent {
 
   buttons = (answerId, paperId) => {
     return this.props.feedbacks.map((feedback, index) => (
-      <Button key={index} variant="raised" color="primary" onClick={() => this.handlePress(feedback._id, answerId, paperId)}> {feedback.content}</Button>
+      <Button key={index} variant="raised" color="primary" onClick={() => this.handlePress(feedback._id, answerId, paperId)}>
+        {feedback.content} (<i style={styles.iz}>{feedback.points} points</i>)
+      </Button>
     ))
   }
 
