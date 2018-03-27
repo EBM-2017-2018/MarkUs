@@ -17,13 +17,15 @@ export const getEvaluations = () => {
           .then(response => response.json())
 }
 
-export const createCopy = (evaluationId, authorId) => {
+export const createCopy = (evaluationId, username) => {
   return fetch(`${BASE_URL}/papers`, {
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
         method: 'POST',
         body: JSON.stringify({
           evaluationId : evaluationId,
-          author: authorId
+          author: username
         })
     })
     .then(checkAuthResponse)
@@ -129,6 +131,52 @@ export const getPromos = () => {
 
 export const getAnswer = (evalId, questionId) => {
   const url = `${BASE_URL}/evaluations/${evalId}/questions/${questionId}/responses`;
+  return fetch(url, { headers: getAuthHeaders() })
+          .then(checkAuthResponse)
+          .then(response => response.json())
+}
+
+export const createFeedback = (evaluationId, questionId, points, content) => {
+  return fetch(`${BASE_URL}/feedbacks`, {
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
+        method: 'POST',
+        body: JSON.stringify({
+          evaluationId : evaluationId,
+          questionId: questionId,
+          points: points,
+          content: content
+        })
+    })
+    .then(checkAuthResponse)
+    .then(res => res.json())
+}
+
+export const getFeedbacks = (evalId, questionId) => {
+  const url = `${BASE_URL}/evaluations/${evalId}/questions/${questionId}/feedback`;
+  return fetch(url, { headers: getAuthHeaders() })
+          .then(console.log(getAuthHeaders()))
+          .then(checkAuthResponse)
+          .then(response => response.json())
+}
+
+export const saveFeedBack = (feedbackId, answerId, paperId) => {
+  return fetch(`${BASE_URL}/papers/${paperId}/responses/${answerId}`, {
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
+        method: 'PUT',
+        body: JSON.stringify({
+          feedbackId : feedbackId,
+        })
+    })
+    .then(checkAuthResponse)
+    .then(res => res.json())
+}
+
+export const findCopy = (evaluationId) => {
+  const url = `${BASE_URL}/papers/byUser/${evaluationId}`;
   return fetch(url, { headers: getAuthHeaders() })
           .then(console.log(getAuthHeaders()))
           .then(checkAuthResponse)

@@ -14,6 +14,7 @@ const responseController = require('./responseController');
  *
  */
 router.get('/', paperController.findAll);
+router.get('/byuser/:eid', paperController.findByUser);
 
 /**
  * @api {get} /papers/:id Récupèrer une copiepar Id

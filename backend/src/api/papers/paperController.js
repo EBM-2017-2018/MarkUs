@@ -57,7 +57,7 @@ module.exports.findOne = (req, res) => {
         if (error) {
           return res.send(error);
         }
-        if (req.user.role === 'administrateur' || isResponsableOfPromo(evaluation.promo, req.user, req.headers.Authorization) || paper.author === req.user.username) {
+        if (req.user.role === 'administrateur' || isResponsableOfPromo(evaluation.promo, req.user, req.headers.authorization) || paper.author === req.user.username) {
           return res.json(paper);
         }
         return res.json({ message: 'Access Denied' });
@@ -111,7 +111,7 @@ module.exports.create = (req, res) => {
     if (error) {
       return res.send(error);
     }
-    if (req.user.role === 'administrateur' || req.user.username === evaluation.author || (evaluation.published && isInPromo(evaluation.promo, req.user, req.headers.Authorization))) {
+    if (req.user.role === 'administrateur' || req.user.username === evaluation.author || (evaluation.published && isInPromo(evaluation.promo, req.user, req.headers.authorization))) {
       return paper.save((err) => {
         if (err) {
           return res.json(err);
@@ -148,4 +148,32 @@ module.exports.delete = (req, res) => {
       return res.json({ message: 'Access Denied' });
     });
   });
+};
+
+
+module.exports.findByUser = (req, res) => {
+  Paper.findOne(
+    {
+      evaluationId: req.params.eid,
+      author: req.user.username,
+    },
+    (err, paper) => {
+      if (err) {
+        return res.send(err);
+      }
+      if (paper) {
+        Evaluation.findOne({ _id: paper.evaluationId }, (error, evaluation) => {
+          if (error) {
+            return res.send(error);
+          }
+          if (req.user.role === 'administrateur' || isResponsableOfPromo(evaluation.promo, req.user, req.headers.Authorization) || paper.author === req.user.username) {
+            return res.json(paper);
+          }
+          return res.json({ message: 'Access Denied' });
+        });
+      } else {
+        return false;
+      }
+    },
+  );
 };

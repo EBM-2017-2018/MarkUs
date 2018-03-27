@@ -4,7 +4,7 @@ import {TextField, Button, withStyles} from 'material-ui';
 import { Redirect } from 'react-router'
 
 import { getUser } from "../UserManager";
-import {createCopy, getEvaluation, updateCopy} from '../../services'
+import {createCopy, getEvaluation, updateCopy, findCopy} from '../../services'
 
 const styles = {
   title:{
@@ -31,11 +31,11 @@ class AnswerQuestion extends PureComponent {
     this.state = {
       date: '',
       evaluation_id : '',
-      copy_id : '',
+      copy : {},
       name: '',
       questions: [],
       responses:[],
-      author: this.user.id,
+      author: '',
       fireRedirect: false
     };
   }
@@ -45,27 +45,34 @@ class AnswerQuestion extends PureComponent {
     console.log("e", evaluation)
     this.setState({
       date: evaluation.date,
-      copy_id : '',
-      evaluation_id : evaluation.id,
+      evaluation_id : evaluation._id,
       name: evaluation.name,
-      questions: evaluation.questions
-    })
-    // TODO CREATE OR FIND COPY
-    createCopy(evaluation, this.state.author)
-      .then(response => {
-        this.setState({
-          copy_id: response._id
+      questions: evaluation.questions,
+      author: this.user.username
+    }, () => {
+
+      let copy = findCopy(this.state.evaluation_id).then(() => {
+        console.log('llll', copy)
+        if (copy) {
+          createCopy(this.state.evaluation_id, this.state.author).then(()=>{
+            copy = findCopy(this.state.evaluation_id, this.state.author)
+          })
+        }})
+        .then(() => {
+          this.setState({copy})
         })
-      })
-    console.log('lllaaa', this.state.questions);
-  }
+      }
+      )
+      console.log('coucou');
+  };
+
+
 
   handleNameChange(index, question_id) {
     return (event) => {
       const value = event.target.value
       this.setState(state => {
         const responses = state.responses.slice();
-        console.log('e', value)
         responses[index] = {content: value, questionId: question_id}
         return {responses}
       })
@@ -74,7 +81,8 @@ class AnswerQuestion extends PureComponent {
   }
 
   handleSubmit = (event) => {
-    updateCopy(this.state.copy_id, this.state.responses);
+    console.log('lacopie', this.state.copy);
+    updateCopy(this.state.copy._id, this.state.responses);
     this.setState({ fireRedirect: true })
   }
 

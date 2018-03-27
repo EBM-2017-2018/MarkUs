@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react';
-import { withStyles, Button, Paper, Typography } from 'material-ui';
+import { withStyles, Button, Paper } from 'material-ui';
 import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
 
 import Feedback from './Feedback'
-import {getEvaluation, getAnswer} from '../../services'
+import {getEvaluation, getAnswer, createFeedback, getFeedbacks} from '../../services'
 
 
 const styles = {
@@ -28,19 +28,23 @@ class StepsFeedback extends PureComponent {
       activeStep: 0,
       evaluation: {},
       currentQuestion: {},
-      answers: [],
+      feedbacks:[],
+      currentAnswers: [],
       questions: []
     };
   }
 
   async componentDidMount(){
-    console.log('aa')
     const evaluation = await getEvaluation(this.props.match.params.evaluation_id)
     this.setState({
       evaluation: evaluation,
       currentQuestion: evaluation.questions[0],
       questions: evaluation.questions
     })
+
+    this.getFeedbacks2()
+    const answers = await getAnswer(this.state.evaluation._id, this.state.currentQuestion._id)
+    this.setState({currentAnswers: answers})
   }
 
   getSteps() {
@@ -49,34 +53,43 @@ class StepsFeedback extends PureComponent {
     })
   }
 
+  async getFeedbacks2(){
+    let feedbacks = await getFeedbacks(this.state.evaluation._id, this.state.currentQuestion._id)
+    if (feedbacks.length === 0) {
+      await createFeedback(this.state.evaluation._id, this.state.currentQuestion._id, 0, 'Nul')
+      await createFeedback(this.state.evaluation._id, this.state.currentQuestion._id, 1, 'Moyen')
+      await createFeedback(this.state.evaluation._id, this.state.currentQuestion._id, 2, 'Bon')
+      feedbacks = await getFeedbacks(this.state.evaluation._id, this.state.currentQuestion._id)
+    }
+    this.setState({feedbacks})
+  }
+
 
   getStepContent(step) {
-    switch (step) {
-      case 0:
-        return (
-          <Feedback answerId='' />
-        )
-      case 1:
-        return (
-          <Feedback answerId='' />
-        )
-      default:
-        return 'Unknown step';
+    if (this.state.feedbacks && this.state.currentAnswers){
+      console.log('aaa', this.state.currentAnswers);
+      return <Feedback callbackNext={this.handleNext} feedbacks={this.state.feedbacks} answers={this.state.currentAnswers}/>
     }
   }
 
 
+
   handleNext = () => {
+    console.log(this.state.question)
     this.setState({
       activeStep: this.state.activeStep + 1,
-      currentQuestion: this.state.questions[this.state.activeStep]
+      currentQuestion: this.state.questions[this.state.activeStep+1]
+    },()=>{
+      if(this.state.activeStep !== this.state.questions.length){
+        getAnswer(this.state.evaluation._id, this.state.currentQuestion._id)
+          .then( (response) => {
+            this.setState({
+              currentAnswers: response
+            })
+          })
+        this.getFeedbacks2()
+      }
     })
-    getAnswer(this.state.evaluation._id, this.state.currentQuestion._id)
-      .then( (response) => {
-        this.setState({
-          answers: response
-        })
-      })
   };
 
   handleBack = () => {
@@ -87,13 +100,15 @@ class StepsFeedback extends PureComponent {
     getAnswer(this.state.evaluation._id, this.state.currentQuestion._id)
       .then( (response) => {
         this.setState({
-          answers: response
+          currentAnswers: response
         })
       })
+    this.getFeedbacks2()
   };
 
   goHome = () => {
     // TODO
+    alert('TODO #LOUIS GRIZZ CLICKER')
    }
 
       render() {
@@ -109,19 +124,7 @@ class StepsFeedback extends PureComponent {
                  <Step key={label}>
                    <StepLabel>{label}</StepLabel>
                    <StepContent>
-                     {this.getStepContent(index)}
-                     <div className={classes.actionsContainer}>
-                       <div>
-                         <Button
-                           variant="raised"
-                           color="primary"
-                           onClick={this.handleNext}
-                           className={classes.button}
-                         >
-                           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                         </Button>
-                       </div>
-                     </div>
+                     {this.state.feedbacks && this.getStepContent(index)}
                    </StepContent>
                  </Step>
                );
@@ -129,9 +132,8 @@ class StepsFeedback extends PureComponent {
            </Stepper>
            {activeStep === steps.length && (
              <Paper square elevation={0} className={classes.resetContainer}>
-               <Typography>Evaluation créer avec succes</Typography>
                <Button onClick={this.goHome} className={classes.button}>
-                 Retour à la page d'accueil
+                Go home
                </Button>
              </Paper>
            )}

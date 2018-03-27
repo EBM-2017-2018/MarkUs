@@ -112,8 +112,8 @@ class StepsEvaluation extends PureComponent {
              <Paper square elevation={0} className={classes.resetContainer}>
                <Typography>Evaluation créer avec succes</Typography>
                <Button onClick={this.goHome} className={classes.button}>
-                 <Link to={`/${this.state.id}/addquestions`}>
-                  Back
+                 <Link to={`/`}>
+                  Home
                  </Link>
                </Button>
              </Paper>

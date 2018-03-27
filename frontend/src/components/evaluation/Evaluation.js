@@ -34,7 +34,6 @@ class Evaluation extends PureComponent {
 
   handleDeleteEvaluation = () => {
     deleteEvaluation(this.state.id)
-    console.log(this.props.index);
     this.props.updateListState(this.props.index)
   }
 

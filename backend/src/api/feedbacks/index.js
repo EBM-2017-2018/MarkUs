@@ -57,4 +57,6 @@ router.post('/', feedbackController.create);
  */
 router.delete('/:id', feedbackController.delete);
 
+router.delete('/', feedbackController.deleteAll);
+
 module.exports = router;
