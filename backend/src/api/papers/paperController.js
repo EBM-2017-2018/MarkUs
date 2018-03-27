@@ -171,7 +171,7 @@ module.exports.findByUser = (req, res) => {
           return res.json({ message: 'Access Denied' });
         });
       }
-      return false;
+      return res.json({});
     },
   );
 };
