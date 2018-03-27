@@ -8,7 +8,7 @@ const feedbackController = require('./feedbackController');
  * @api {get} /feedbacks/:id
  * Récupère un feedback identifié par son Id
  * @apiName GetFeedbackById
- * @apiGroup Feedback
+ * @apiGroup Feedbacks
  * @apiDescription Renvoie le feedback demandé par Id
  *
  * @apiParam  {String} id   ID du feedback
@@ -23,7 +23,7 @@ router.get('/:id', feedbackController.findOne);
  * @api {post} /feedbacks
  * Crée un feedback
  * @apiName DeleteFeedbackById
- * @apiGroup Feedback
+ * @apiGroup Feedbacks
  * @apiDescription Crée un feedback
  *
  * @apiParam  {String} evaluationId   ID de l'évaluation associée au feedback
@@ -46,7 +46,7 @@ router.post('/', feedbackController.create);
  * @api {delete} /feedbacks/:id
  * Supprime un feedback identifié par son Id
  * @apiName DeleteFeedbackById
- * @apiGroup Feedback
+ * @apiGroup Feedbacks
  * @apiDescription Supprime le feedback identifié par son Id
  *
  * @apiParam  {String} id   ID du feedback

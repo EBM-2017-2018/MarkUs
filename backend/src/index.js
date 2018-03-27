@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const User = require('./api/users/userModel');
 
 const path = require('path');
@@ -10,6 +11,15 @@ const bodyParser = require('body-parser');
 const app = express();
 const server = require('http')
   .Server(app);
+
+fetch('https://linkapp.ebm.nymous.io/api/promos/listpromosof/student', {
+  headers: {
+    Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJyb2xlIjoiYWRtaW5pc3RyYXRldXIiLCJub20iOiJyb290IiwicHJlbm9tIjoicm9vdCIsImVtYWlsIjoicm9vdEByb290LmZyIiwiaWF0IjoxNTIxNzI0MzUwfQ.jw6uYIOEhtBXekYXHQNjG6Prdi21_Z5oEacGnQ-rsIU',
+    'Content-Type': 'application/json',
+  },
+})
+  .then(res => res.json())
+  .then(res => console.log(res));
 
 app.use(require('ebm-auth')
   .initialize({

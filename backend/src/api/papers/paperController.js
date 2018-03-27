@@ -1,12 +1,12 @@
 const Paper = require('./paperModel');
 const Evaluation = require('../evaluations/evaluationModel');
-const { isResponsableOfPromo } = require('../../services/userPermissionsService');
+const { isResponsableOfPromo, isInPromo } = require('../../services/userPermissionsService');
 
 module.exports = {};
 
 module.exports.findAll = (req, res) => {
   if (req.user.role === 'admin') {
-    Paper.find({}, (err, papers) => {
+    return Paper.find({}, (err, papers) => {
       if (err) {
         return res.send(err);
       }
@@ -24,26 +24,26 @@ module.exports.findAllByEvaluation = (req, res) => {
     }
 
     authorizedUser = evaluation.author;
-    return true;
+    if (req.user.role === 'administrateur' || req.user.username === authorizedUser) {
+      Paper.find({ evaluationId: req.params.id }, (error, papers) => {
+        if (error) {
+          return res.send(error);
+        }
+        return res.json(papers);
+      });
+    } else {
+      Paper.find({
+        evaluationId: req.params.id,
+        author: req.user.username,
+      }, (error, papers) => {
+        if (error) {
+          return res.send(error);
+        }
+        return res.json(papers);
+      });
+    }
+    return res.json({ message: 'Access Denied' });
   });
-  if (req.user.role === 'administrateur' || req.user.username === authorizedUser) {
-    Paper.find({ evaluationId: req.params.id }, (err, papers) => {
-      if (err) {
-        return res.send(err);
-      }
-      return res.json(papers);
-    });
-  } else {
-    Paper.find({
-      evaluationId: req.params.id,
-      author: req.user.username,
-    }, (err, papers) => {
-      if (err) {
-        return res.send(err);
-      }
-      return res.json(papers);
-    });
-  }
 };
 
 module.exports.findOne = (req, res) => {
@@ -53,63 +53,99 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      Evaluation.findOne({ _id: paper.evaluationId }, (error, evaluation) => {
+      return Evaluation.findOne({ _id: paper.evaluationId }, (error, evaluation) => {
         if (error) {
           return res.send(error);
         }
-        if (req.user.role === 'administrateur' || isResponsableOfPromo(evaluation.promo, req.user, req.header.Authorization) || paper.author === req.user.username) {
+        if (req.user.role === 'administrateur' || isResponsableOfPromo(evaluation.promo, req.user, req.headers.Authorization) || paper.author === req.user.username) {
           return res.json(paper);
         }
         return res.json({ message: 'Access Denied' });
       });
-      return res.json({ message: 'Couldn\'t find evaluation' });
     },
   );
 };
 
 module.exports.update = (req, res) => {
-  const { responses, corrected } = req.body;
-  const set = { responses };
-  if (typeof (corrected) === 'boolean') {
-    set.corrected = corrected;
-  }
-  Paper.update(
-    {
-      _id: req.params.id,
-    },
-    {
-      $set: set,
-    },
-    { multi: true },
-    (err) => {
-      if (err) {
-        return res.json(err);
+  Paper.findOne({ _id: req.params.id }, (err, paper) => {
+    if (err) {
+      return res.send(err);
+    }
+    return Evaluation.findOne({ _id: paper.evaluationId }, (err1, evaluation) => {
+      if (err1) {
+        res.send(err1);
       }
-      return res.end();
-    },
-  );
+      if (evaluation.author === req.user.username || paper.author === req.user.username) {
+        const { responses, corrected } = req.body;
+        const set = {};
+        if (typeof (responses) === 'object') {
+          set.responses = responses;
+        }
+        if (typeof (corrected) === 'boolean') {
+          set.corrected = corrected;
+        }
+        return Paper.update(
+          {
+            _id: req.params.id,
+          },
+          {
+            $set: set,
+          },
+          { multi: true },
+          (error) => {
+            if (error) {
+              return res.json(error);
+            }
+            return res.end();
+          },
+        );
+      }
+      return res.json({ message: 'Access Denied' });
+    });
+  });
 };
 
 module.exports.create = (req, res) => {
   const paper = new Paper(req.body);
-  paper.save((err) => {
-    if (err) {
-      return res.json(err);
+  Evaluation.findOne({ _id: paper.evaluationId }, (error, evaluation) => {
+    if (error) {
+      return res.send(error);
     }
-    return res.json(paper);
+    if (req.user.role === 'administrateur' || req.user.username === evaluation.author || (evaluation.published && isInPromo(evaluation.promo, req.user, req.headers.Authorization))) {
+      return paper.save((err) => {
+        if (err) {
+          return res.json(err);
+        }
+        return res.json(paper);
+      });
+    }
+    return res.json({ message: 'Access Denied' });
   });
 };
 
 
 module.exports.delete = (req, res) => {
-  Paper.deleteOne(
-    { _id: req.params.id },
-    (err) => {
-      if (err) {
-        return res.json(err);
+  Paper.findOne({ _id: req.params.id }, (error, paper) => {
+    if (error) {
+      return res.send(error);
+    }
+    return Evaluation.findOne({ _id: paper.evaluationId }, (err1, evaluation) => {
+      if (err1) {
+        res.send(err1);
       }
+      if (req.user.role === 'administrateur' || req.user.username === evaluation.author) {
+        return Paper.deleteOne(
+          { _id: req.params.id },
+          (err) => {
+            if (err) {
+              return res.json(err);
+            }
 
-      return res.json({ message: 'evaluation supprimée' });
-    },
-  );
+            return res.json({ message: 'evaluation supprimée' });
+          },
+        );
+      }
+      return res.json({ message: 'Access Denied' });
+    });
+  });
 };
