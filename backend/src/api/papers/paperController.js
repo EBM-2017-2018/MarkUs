@@ -150,7 +150,6 @@ module.exports.delete = (req, res) => {
   });
 };
 
-
 module.exports.findByUser = (req, res) => {
   Paper.findOne(
     {
@@ -162,7 +161,7 @@ module.exports.findByUser = (req, res) => {
         return res.send(err);
       }
       if (paper) {
-        Evaluation.findOne({ _id: paper.evaluationId }, (error, evaluation) => {
+        return Evaluation.findOne({ _id: paper.evaluationId }, (error, evaluation) => {
           if (error) {
             return res.send(error);
           }
@@ -171,9 +170,8 @@ module.exports.findByUser = (req, res) => {
           }
           return res.json({ message: 'Access Denied' });
         });
-      } else {
-        return false;
       }
+      return false;
     },
   );
 };
