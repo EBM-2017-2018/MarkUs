@@ -14,6 +14,10 @@ const styles = {
   },
   flex: {
     flex: 1,
+  },
+  title:{
+    color: 'white',
+    textDecoration: 'none'
   }
 };
 
@@ -57,7 +61,7 @@ class GlobalAppBar extends PureComponent {
       <AppBar position="absolute" className={appBarClasses}>
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            <Link to="/">{this.props.appTitle}</Link>
+            <Link to="/" style={styles.title}>{this.props.appTitle}</Link>
           </Typography>
           <Tooltip id="apps-icon" title="Applications">
             <IconButton
