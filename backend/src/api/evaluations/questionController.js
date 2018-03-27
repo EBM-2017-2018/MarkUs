@@ -11,7 +11,7 @@ module.exports.findAll = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      if (userRole === 'administrateur' || username === evaluation.author || (evaluation.published && isInPromo(evaluation.promo, req.user, req.headers.Authorization))) {
+      if (userRole === 'administrateur' || username === evaluation.author || (evaluation.published && isInPromo(evaluation.promo, req.user, req.headers.authorization))) {
         return res.json(evaluation.questions);
       }
       return res.json({ message: 'Access Denied' });
@@ -30,7 +30,7 @@ module.exports.findOne = (req, res) => {
       if (err) {
         return res.send(err);
       }
-      if (req.user.role === 'administrateur' || req.user.username === 'intervant' || (evaluation.published && isInPromo(evaluation.promo, req.user, req.headers.Authorization))) {
+      if (req.user.role === 'administrateur' || req.user.username === 'intervant' || (evaluation.published && isInPromo(evaluation.promo, req.user, req.headers.authorization))) {
         return res.json(evaluation.questions[0]);
       }
       return res.json({ message: 'Access Denied' });
@@ -40,7 +40,7 @@ module.exports.findOne = (req, res) => {
 
 module.exports.create = (req, res) => {
   const { content, points, format } = req.body;
-  Evaluation.find(
+  return Evaluation.findOne(
     {
       _id: req.params.id,
     },

@@ -35,25 +35,25 @@ module.exports.findAll = (req, res) => {
 };
 
 
-module.exports.findOne = (req, res) => {
+module.exports.findOne = (req, res) =>
   Evaluation.findOne(
     { _id: req.params.id },
     (err, evaluation) => {
       if (err) {
         return res.send(err);
       }
-      const test = isInPromo(evaluation.promo, req.user, req.headers.authorization);
-      if (req.user.role === 'administrateur' || req.user.username === evaluation.author || (evaluation.published && test)) {
-        return res.json(evaluation);
-      }
-      return res.json({ message: 'Access Denied' });
+      return isInPromo(evaluation.promo, req.user, req.headers.authorization)
+        .then((test) => {
+          if (req.user.role === 'administrateur' || req.user.username === evaluation.author || (evaluation.published && test)) {
+            return res.json(evaluation);
+          }
+          return res.json({ message: 'Access Denied' });
+        });
     },
   );
-};
 
 module.exports.create = (req, res) => {
   const evaluation = new Evaluation(req.body);
-  console.log(req.user);
   if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
     return evaluation.save((err) => {
       if (err) {

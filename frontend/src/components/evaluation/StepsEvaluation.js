@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import { withStyles, Button, Paper, Typography } from 'material-ui';
 import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
+import {Link} from 'react-router-dom';
 
 import FormEvaluation from './FormEvaluation';
 import FormQuestion from '../question/FormQuestion';
@@ -111,7 +112,9 @@ class StepsEvaluation extends PureComponent {
              <Paper square elevation={0} className={classes.resetContainer}>
                <Typography>Evaluation créer avec succes</Typography>
                <Button onClick={this.goHome} className={classes.button}>
-                 Retour à la page d'accueil
+                 <Link to={`/`}>
+                  Home
+                 </Link>
                </Button>
              </Paper>
            )}

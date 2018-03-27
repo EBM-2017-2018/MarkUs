@@ -4,6 +4,7 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl} from 'material-ui/Form';
 import Select from 'material-ui/Select';
+import { getUser } from "../UserManager";
 
 import {createEvaluation, getPromos} from '../../services'
 
@@ -30,6 +31,8 @@ class FormEvaluation extends PureComponent {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  user = getUser();
+
   async componentDidMount(){
     let promos = await getPromos()
     promos = promos.promotions
@@ -37,8 +40,9 @@ class FormEvaluation extends PureComponent {
     this.setState({promos})
   }
 
-  async handleSubmit (){
-    return await createEvaluation(this.state.name, 'author', this.state.promo);
+  handleSubmit (){
+    console.log('p', this.state.promo);
+    return createEvaluation(this.state.name, this.user.username, this.state.promo);
   }
 
 
@@ -69,7 +73,7 @@ class FormEvaluation extends PureComponent {
                 </MenuItem>
                 {this.state.promos.map(p => {
                   return (
-                    <MenuItem value={p._id} key={p._id} >{p.nomPromo}</MenuItem>
+                    <MenuItem value={p.nomPromo} key={p._id} >{p.nomPromo}</MenuItem>
                   );
                 })}
               </Select>

@@ -36,13 +36,13 @@ class ListEvaluation extends PureComponent {
   }
 
   updateListState = (index) => {
-    //TODO PROBLEME SUPPRIME TOUJORUS LE DERNIER
-    console.log('yolo', index)
-    console.log('eval1', this.state.evaluations)
+    // TODO
+    console.log('eval2', this.state.evaluations)
+    console.log('index', index);
     this.setState(state => {
       const evaluations = state.evaluations.slice();
       evaluations.splice(index, 1)
-      console.log('eval2', evaluations)
+      console.log('eval1', evaluations)
       return {evaluations}
     })
   }
@@ -56,6 +56,7 @@ class ListEvaluation extends PureComponent {
               <TableCell style={styles.tableCell}>Titre</TableCell>
               <TableCell style={styles.tableCell}>Groupe</TableCell>
               <TableCell style={styles.tableCell}>Partager</TableCell>
+              <TableCell style={styles.tableCell}>Corriger</TableCell>
               <TableCell style={styles.tableCell} numeric>Modifier</TableCell>
               <TableCell style={styles.tableCell} numeric>Publique</TableCell>
               <TableCell style={styles.tableCell} numeric>Supprimer</TableCell>
