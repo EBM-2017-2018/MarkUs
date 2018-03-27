@@ -37,7 +37,6 @@ class FormEvaluation extends PureComponent {
     };
 
     this.handleContentChange = this.handleContentChange.bind(this);
-    this.handlePointsChange = this.handlePointsChange.bind(this);
   }
 
   handleSubmit = (evalId) => {
