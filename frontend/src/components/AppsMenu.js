@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import {GridList, Popover, withStyles} from 'material-ui';
 
 import AppIcon from './AppIcon';
-import logo from '../logo.svg'
+import logoClock from '../logo-clock.png'
+import logoLinkapp from '../logo-linkapp.png'
+import logoMarkus from '../logo-markus.png'
+import logoOklm from '../logo-oklm.png'
+import logoRedline from '../logo-redline.png'
+import logoSagg from '../logo-sagg.png'
 
 const styles = theme => ({
   root: {
@@ -25,33 +30,33 @@ class AppsMenu extends PureComponent {
   apps = [
     {
       name: 'OKLM',
-      url: '//oklm.ebm.nymous.io',
-      logo: logo
+      url: 'https://oklm.ebm.nymous.io',
+      logo: logoOklm
     },
     {
       name: 'Redline',
       url: '//redline.ebm.nymous.io',
-      logo: logo
+      logo: logoRedline
     },
     {
       name: 'Linkapp',
       url: '//linkapp.ebm.nymous.io',
-      logo: logo
+      logo: logoLinkapp
     },
     {
       name: 'Markus',
       url: '//markus.ebm.nymous.io',
-      logo: logo
+      logo: logoMarkus
     },
     {
       name: 'SAGG',
       url: '//sagg.ebm.nymous.io',
-      logo: logo
+      logo: logoSagg
     },
     {
       name: 'Livecoding',
       url: '//clock-livecoding.ebm.nymous.io',
-      logo: logo
+      logo: logoClock
     }
   ];
 

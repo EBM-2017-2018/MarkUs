@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
-import { withStyles, Button, Paper } from 'material-ui';
+import { withStyles, Paper } from 'material-ui';
 import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
+import {Link} from 'react-router-dom';
 
 import Feedback from './Feedback'
 import {getEvaluation, getAnswer, createFeedback, getFeedbacks} from '../../services'
@@ -131,9 +132,9 @@ class StepsFeedback extends PureComponent {
            </Stepper>
            {activeStep === steps.length && (
              <Paper square elevation={0} className={classes.resetContainer}>
-               <Button onClick={this.goHome} className={classes.button}>
-                Go home
-               </Button>
+               <Link to={`/`}>
+                 Go Home
+               </Link>
              </Paper>
            )}
          </div>
