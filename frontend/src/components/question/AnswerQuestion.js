@@ -40,31 +40,26 @@ class AnswerQuestion extends PureComponent {
     };
   }
 
-  async componentDidMount(){
-    const evaluation = await getEvaluation(this.props.match.params.evaluation_id)
-    console.log("e", evaluation)
-    this.setState({
-      date: evaluation.date,
-      evaluation_id : evaluation._id,
-      name: evaluation.name,
-      questions: evaluation.questions,
-      author: this.user.username
-    }, () => {
-
-      let copy = findCopy(this.state.evaluation_id).then(() => {
-        console.log('llll', copy)
-        if (copy) {
-          createCopy(this.state.evaluation_id, this.state.author).then(()=>{
-            copy = findCopy(this.state.evaluation_id, this.state.author)
-          })
-        }})
-        .then(() => {
-          this.setState({copy})
-        })
-      }
-      )
-      console.log('coucou');
-  };
+  async componentDidMount() {
+   const evaluation = await getEvaluation(this.props.match.params.evaluation_id)
+   console.log("e", evaluation)
+   this.setState({
+           date: evaluation.date,
+           evaluation_id: evaluation._id,
+           name: evaluation.name,
+           questions: evaluation.questions,
+           author: this.user.username
+       }, async () => {
+           let copy = await findCopy(this.state.evaluation_id)
+           console.log('hého', Object.keys(copy).length === 0)
+           if (Object.keys(copy).length === 0) {
+               await createCopy(this.state.evaluation_id, this.state.author)
+               copy =await findCopy(this.state.evaluation_id, this.state.author)
+           }
+       this.setState({copy})
+       }
+   )
+};
 
 
 
