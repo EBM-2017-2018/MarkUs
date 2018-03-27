@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {withStyles, Switch, Button, Icon} from 'material-ui';
 import { TableCell, TableRow } from 'material-ui/Table';
 
-import {publishEvaluation} from '../../services'
+import {publishEvaluation, deleteEvaluation} from '../../services'
 
 import {Link} from 'react-router-dom';
 
@@ -20,8 +20,8 @@ class Evaluation extends PureComponent {
       id: props.evaluation._id,
       date: props.evaluation.date,
       name: props.evaluation.name,
-      groupClass: props.evaluation.groupClass,
-      // questions: props.evaluation.questions,
+      promo: props.evaluation.promo,
+      questions: props.evaluation.questions,
       published: props.evaluation.published,
     };
   }
@@ -33,20 +33,29 @@ class Evaluation extends PureComponent {
   };
 
   handleDeleteEvaluation = () => {
-    return () => {
-      // deleteEvaluation(this.state.id)
-      this.props.updateListState(this.props.index)
-    }
+    deleteEvaluation(this.state.id)
+    console.log(this.props.index);
+    this.props.updateListState(this.props.index)
   }
+
 
   render() {
       return(
         <TableRow>
-          <TableCell style={styles.tableCell} >{this.state.name}</TableCell>
-          <TableCell style={styles.tableCell} >{this.state.groupClass}</TableCell>
+          <TableCell style={styles.tableCell} >{this.state.name} <b>{this.state.questions.length} </b></TableCell>
+          <TableCell style={styles.tableCell} >{this.state.promo}</TableCell>
           <TableCell style={styles.tableCell} >
             {this.state.id}
           </TableCell>
+
+          <TableCell style={styles.tableCell} >
+            <Link to={`/${this.state.id}/feedback`}>
+              <Icon color="action">
+                check
+              </Icon>
+            </Link>
+          </TableCell>
+
           <TableCell style={styles.tableCell}>
             <Link to={`/${this.state.id}/addquestions`}>
               <Icon color="action">

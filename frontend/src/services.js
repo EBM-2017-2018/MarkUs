@@ -44,7 +44,7 @@ export const publishEvaluation = (id, publishState) => {
     }).then(checkAuthResponse)
 }
 
-export const createEvaluation = (name, author, group) => {
+export const createEvaluation = (name, author, promo) => {
   return fetch(`${BASE_URL}/evaluations`, {
         headers: getAuthHeaders({
           'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ export const createEvaluation = (name, author, group) => {
         body: JSON.stringify({
           name : name,
           author: author,
-          groupClass: group
+          promo: promo
         })
     }).then(checkAuthResponse)
     .then(res => res.json())

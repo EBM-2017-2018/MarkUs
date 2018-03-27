@@ -37,8 +37,9 @@ class FormEvaluation extends PureComponent {
     this.setState({promos})
   }
 
-  async handleSubmit (){
-    return await createEvaluation(this.state.name, 'author', this.state.promo);
+  handleSubmit (){
+    console.log('p', this.state.promo);
+    return createEvaluation(this.state.name, 'author', this.state.promo);
   }
 
 
@@ -69,7 +70,7 @@ class FormEvaluation extends PureComponent {
                 </MenuItem>
                 {this.state.promos.map(p => {
                   return (
-                    <MenuItem value={p._id} key={p._id} >{p.nomPromo}</MenuItem>
+                    <MenuItem value={p.nomPromo} key={p._id} >{p.nomPromo}</MenuItem>
                   );
                 })}
               </Select>

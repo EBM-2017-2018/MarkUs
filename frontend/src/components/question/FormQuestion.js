@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
 import { TextField, Button, Paper} from 'material-ui';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
-import { Redirect } from 'react-router'
+//import { Redirect } from 'react-router'
+import {Link} from 'react-router-dom';
 
 import {createQuestion} from '../../services'
 import Question  from './Question'
@@ -40,23 +41,16 @@ class FormEvaluation extends PureComponent {
   }
 
   handleSubmit = (evalId) => {
-    console.log('yolo')
-    this.state.questions.map(q => {
+    this.state.questions.forEach(q => {
         return createQuestion(evalId, q.content, q.points)
     })
-    this.setState({ fireRedirect: true })
-    //this.props.match.params.evaluation_id
-    //createQuestions(evalId, this.state.questions)
-
   }
 
   addQuestion = () => {
-
     const question = {
       content: this.state.content,
       points: this.state.points
     }
-
     this.setState(state => {
       const questions = state.questions.slice();
       questions.push(question)
@@ -84,9 +78,14 @@ class FormEvaluation extends PureComponent {
     this.props.match ? evaluation_id = this.props.match.params.evaluation_id : evaluation_id = null;
     if (evaluation_id) {
       submitButton = (
-        <Button style={styles.submitButton} variant="raised" color="secondary" onClick={this.handleSubmit}>
-            Enregistrer
-        </Button>
+        <div>
+          <Button style={styles.submitButton} variant="raised" color="secondary" onClick={() => this.handleSubmit(evaluation_id)}>
+              Enregistrer
+          </Button>
+          <Link to={`/`}>
+            Back
+          </Link>
+        </div>
       )
     }
     return (
@@ -115,9 +114,6 @@ class FormEvaluation extends PureComponent {
               </TableBody>
             </Table>
             { submitButton }
-            {fireRedirect && (
-               <Redirect to={'/'}/>
-             )}
           </Paper>
       </div>
     );

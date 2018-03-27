@@ -9,13 +9,13 @@ import 'typeface-roboto';
 import './index.css';
 
 setUserFromApi()
-  .then(
+  .then( () => {
     ReactDOM.render(
       <Router>
         <App />
       </Router>,
       document.getElementById('root')
     )
-  )
+  })
 
 registerServiceWorker()

@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
 import { withStyles, Button, Paper, Typography } from 'material-ui';
 import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
-import {Link} from 'react-router-dom';
 
-import FormEvaluation from './FormEvaluation';
-import FormQuestion from '../question/FormQuestion';
+import Feedback from './Feedback'
+import {getEvaluation, getAnswer} from '../../services'
 
 
 const styles = {
@@ -19,18 +18,35 @@ const styles = {
   },
 };
 
-class StepsEvaluation extends PureComponent {
+
+
+class StepsFeedback extends PureComponent {
 
   constructor(props){
     super(props);
     this.state = {
       activeStep: 0,
-      evalId: ''
+      evaluation: {},
+      currentQuestion: {},
+      answers: [],
+      questions: []
     };
   }
 
+  async componentDidMount(){
+    console.log('aa')
+    const evaluation = await getEvaluation(this.props.match.params.evaluation_id)
+    this.setState({
+      evaluation: evaluation,
+      currentQuestion: evaluation.questions[0],
+      questions: evaluation.questions
+    })
+  }
+
   getSteps() {
-    return ['Créer une évaluation', 'Ajouter des questions'];
+    return this.state.questions.map((q) => {
+      return q.content
+    })
   }
 
 
@@ -38,11 +54,11 @@ class StepsEvaluation extends PureComponent {
     switch (step) {
       case 0:
         return (
-          <FormEvaluation ref="evaluation"/>
+          <Feedback answerId='' />
         )
       case 1:
         return (
-          <FormQuestion ref="question"/>
+          <Feedback answerId='' />
         )
       default:
         return 'Unknown step';
@@ -51,26 +67,29 @@ class StepsEvaluation extends PureComponent {
 
 
   handleNext = () => {
-    if (this.state.activeStep === 0){
-       this.refs.evaluation.handleSubmit()
-        .then(
-          (r) => {
-            this.setState({evalId: r._id})
-          }
-        )
-    }
-    if (this.state.activeStep === 1){
-       this.refs.question.handleSubmit(this.state.evalId)
-    }
     this.setState({
       activeStep: this.state.activeStep + 1,
-    });
+      currentQuestion: this.state.questions[this.state.activeStep]
+    })
+    getAnswer(this.state.evaluation._id, this.state.currentQuestion._id)
+      .then( (response) => {
+        this.setState({
+          answers: response
+        })
+      })
   };
 
   handleBack = () => {
     this.setState({
       activeStep: this.state.activeStep - 1,
-    });
+      currentQuestion: this.state.questions[this.state.activeStep]
+    })
+    getAnswer(this.state.evaluation._id, this.state.currentQuestion._id)
+      .then( (response) => {
+        this.setState({
+          answers: response
+        })
+      })
   };
 
   goHome = () => {
@@ -112,9 +131,7 @@ class StepsEvaluation extends PureComponent {
              <Paper square elevation={0} className={classes.resetContainer}>
                <Typography>Evaluation créer avec succes</Typography>
                <Button onClick={this.goHome} className={classes.button}>
-                 <Link to={`/${this.state.id}/addquestions`}>
-                  Back
-                 </Link>
+                 Retour à la page d'accueil
                </Button>
              </Paper>
            )}
@@ -123,4 +140,4 @@ class StepsEvaluation extends PureComponent {
      }
 
 }
-export default withStyles(styles)(StepsEvaluation);
+export default withStyles(styles)(StepsFeedback);

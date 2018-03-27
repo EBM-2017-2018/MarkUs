@@ -1,20 +1,30 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {TextField, Button, Typography, withStyles} from 'material-ui';
+import {TextField, Button, withStyles} from 'material-ui';
 import { Redirect } from 'react-router'
 
 import { getUser } from "../UserManager";
 import {createCopy, getEvaluation, updateCopy} from '../../services'
 
-const user = getUser()
-
-const styles = {};
+const styles = {
+  title:{
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  answer:{
+    marginBottom: 50,
+  },
+  question:{
+    fontWeight:'bold'
+  }
+};
 
 class AnswerQuestion extends PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired
   };
 
+  user = getUser()
 
   constructor(props){
     super(props);
@@ -25,14 +35,13 @@ class AnswerQuestion extends PureComponent {
       name: '',
       questions: [],
       responses:[],
-      author: user.id,
+      author: this.user.id,
       fireRedirect: false
     };
   }
 
   async componentDidMount(){
     const evaluation = await getEvaluation(this.props.match.params.evaluation_id)
-    // TODO RESOUDRE BUG DU ACCESS DENIED
     console.log("e", evaluation)
     this.setState({
       date: evaluation.date,
@@ -48,6 +57,7 @@ class AnswerQuestion extends PureComponent {
           copy_id: response._id
         })
       })
+    console.log('lllaaa', this.state.questions);
   }
 
   handleNameChange(index, question_id) {
@@ -77,11 +87,13 @@ class AnswerQuestion extends PureComponent {
         <form action="/evaluations">
           {this.state.questions.map((question, index) => {
             return(
-              <div key={index}>
-                <Typography component="p">
-                  {question.content} ? - {question.points} points
-                </Typography>
-                <TextField name="content" onChange={this.handleNameChange(index, question._id)}/>
+              <div style={styles.answer}>
+                <div key={index} style={styles.title}>
+                  <div>Question {index}</div>
+                  <div style={styles.question} >{question.content} ?</div>
+                  <div>{question.points} points</div>
+                </div>
+                <TextField fullWidth style={styles.field} name="content" onChange={this.handleNameChange(index, question._id)}/>
               </div>
             )
           })}
