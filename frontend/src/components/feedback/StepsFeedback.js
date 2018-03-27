@@ -75,7 +75,6 @@ class StepsFeedback extends PureComponent {
 
 
   handleNext = () => {
-    console.log(this.state.question)
     this.setState({
       activeStep: this.state.activeStep + 1,
       currentQuestion: this.state.questions[this.state.activeStep+1]

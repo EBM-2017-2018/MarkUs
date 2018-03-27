@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {TextField, Button, withStyles} from 'material-ui';
 import { Redirect } from 'react-router'
+import {Link} from 'react-router-dom';
 
 import { getUser } from "../UserManager";
 import {createCopy, getEvaluation, updateCopy, findCopy} from '../../services'
@@ -16,6 +17,9 @@ const styles = {
   },
   question:{
     fontWeight:'bold'
+  },
+  para:{
+    textAlign: 'center'
   }
 };
 
@@ -84,31 +88,41 @@ class AnswerQuestion extends PureComponent {
   render() {
     const { from } = this.props.location.state || '/'
     const { fireRedirect } = this.state
-
-    return (
-      <div>
-        <form action="/evaluations">
-          {this.state.questions.map((question, index) => {
-            return(
-              <div style={styles.answer}>
-                <div key={index} style={styles.title}>
-                  <div>Question {index}</div>
-                  <div style={styles.question} >{question.content} ?</div>
-                  <div>{question.points} points</div>
+    if (this.state.questions){
+      return (
+        <div>
+          <form action="/evaluations">
+            {this.state.questions.map((question, index) => {
+              return(
+                <div style={styles.answer}>
+                  <div key={index} style={styles.title}>
+                    <div>Question {index}</div>
+                    <div style={styles.question} >{question.content} ?</div>
+                    <div>{question.points} points</div>
+                  </div>
+                  <TextField fullWidth style={styles.field} name="content" onChange={this.handleNameChange(index, question._id)}/>
                 </div>
-                <TextField fullWidth style={styles.field} name="content" onChange={this.handleNameChange(index, question._id)}/>
-              </div>
-            )
-          })}
-          <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
-            Enregistrer sa copie
-          </Button>
-        </form>
-        {fireRedirect && (
-          <Redirect to={from || '/'}/>
-        )}
-      </div>
+              )
+            })}
+            <Button variant="raised" color="secondary" onClick={this.handleSubmit}>
+              Enregistrer sa copie
+            </Button>
+          </form>
+          {fireRedirect && (
+            <Redirect to={from || '/'}/>
+          )}
+        </div>
+      )
+    }else{
+      return (
+        <div style={styles.para}>
+          <p > Malheureusement vous n'avez pas accès à cette évaluation </p>
+          <Link to={`/`}>
+            Go Home
+          </Link>
+        </div>
       )
     }
+  }
 }
 export default withStyles(styles)(AnswerQuestion);
