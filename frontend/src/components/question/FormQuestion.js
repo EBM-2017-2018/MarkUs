@@ -96,7 +96,6 @@ class FormEvaluation extends PureComponent {
               <TableHead>
                 <TableRow>
                   <TableCell style={styles.tableCell}>Question</TableCell>
-                  <TableCell style={styles.tableCell}>Nombre de points</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

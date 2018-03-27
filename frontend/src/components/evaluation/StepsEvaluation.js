@@ -17,6 +17,11 @@ const styles = {
     marginTop: 50,
     marginBottom: 50,
   },
+  finish:{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 30
+  }
 };
 
 class StepsEvaluation extends PureComponent {
@@ -92,7 +97,7 @@ class StepsEvaluation extends PureComponent {
                    <StepContent>
                      {this.getStepContent(index)}
                      <div className={classes.actionsContainer}>
-                       <div>
+                       <div style={styles.finish}>
                          <Button
                            variant="raised"
                            color="primary"

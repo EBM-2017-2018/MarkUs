@@ -11,6 +11,10 @@ const style = {
   header:{
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  button:{
+    color:'white',
+    textDecoration: 'none'
   }
 };
 
@@ -24,7 +28,7 @@ class Admin extends PureComponent {
             Liste des évaluations
           </Typography>
           <Button variant="raised" color="secondary">
-            <Link to="/evaluations/new">Créer une évaluation</Link>
+            <Link to="/evaluations/new" style={style.button}>Créer une évaluation</Link>
           </Button>
 
         </div>
