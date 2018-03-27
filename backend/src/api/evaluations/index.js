@@ -258,9 +258,9 @@ router.post('/:id/questions', questionController.create);
  * Supprime une question identifiée par id
  * @apiName DeleteQuestion
  * @apiGroup Questions
- * @apiDescription Une requête qui crée une question dans une évaluation donnée
+ * @apiDescription Une requête qui supprime une question dans une évaluation donnée
  *
- * @apiParam  {String} id   ID de l'évaluation pour laquelle il faut créer la question
+ * @apiParam  {String} id   ID de l'évaluation pour laquelle il faut supprimer la question
  * @apiParam  {String} qid   ID de la question à supprimer
  * @apiParamExample  {string}  Request-Example:
  *    id: 5aa00cbddfc165256122dccc,
@@ -325,6 +325,21 @@ router.get('/:id/papers', paperController.findAllByEvaluation);
  */
 router.get('/:id/questions/:qid/feedback', feedbackController.findByQuestion);
 
+/**
+ * @api {get} /evaluations/:id/questions/:qid/responses
+ * Récupère les réponses associées à une question identifiée par son Id
+ * @apiName GetResponsesByQuestionId
+ * @apiGroup Responses
+ * @apiDescription Une requête qui renvoit une liste de réponses
+ * pour une question donnée identifiée par son Id
+ * pour une évaluation donnée identifiée par son Id
+ *
+ * @apiParam  {String} id   ID de l'évaluation dont il faut renvoyer la question
+ * @apiParam  {String} qid   ID de la question dont il faut renvoyer les réponses
+ * @apiParamExample  {String}  Request-Example:
+ *    id: 5aa00cbddfc165256122dccc
+ *    qid: 5aa00cbddfc165256122dccc
+ */
 router.get('/:id/questions/:qid/responses', responseController.findByQuestion);
 
 module.exports = router;

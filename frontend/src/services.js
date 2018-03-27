@@ -42,7 +42,7 @@ export const publishEvaluation = (id, publishState) => {
           published: publishState,
         })
     }).then(checkAuthResponse)
-}
+};
 
 export const createEvaluation = (name, author, promo) => {
   return fetch(`${BASE_URL}/evaluations`, {
@@ -57,7 +57,7 @@ export const createEvaluation = (name, author, promo) => {
         })
     }).then(checkAuthResponse)
     .then(res => res.json())
-}
+};
 
 export const createQuestion = (evaluationId, content, points) => {
   return fetch(`${BASE_URL}/evaluations/${evaluationId}/questions`, {
