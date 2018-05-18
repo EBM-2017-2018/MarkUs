@@ -15,7 +15,11 @@ module.exports.findByQuestion = (req, res) => {
           return res.send(err);
         }
         papers.forEach((paper) => {
-          responses.push(paper.responses(paper.responses.find(req.params.qid)));
+          responses.push({
+            // eslint-disable-next-line
+            paperId: paper._id,
+            answers: paper.responses.find(response => `${response.questionId}` === `${req.params.qid}`),
+          });
         });
         return res.json(responses);
       });
@@ -121,10 +125,10 @@ module.exports.update = (req, res) => {
   const { content, feedbackId } = req.body;
   const set = {};
   if (typeof (content) === 'string') {
-    set.content = content;
+    set['responses.$.content'] = content;
   }
   if (typeof (feedbackId) === 'string') {
-    set.feedbackId = feedbackId;
+    set['responses.$.feedbackId'] = feedbackId;
   }
   Paper.findOne(
     { _id: req.params.id },
@@ -150,7 +154,7 @@ module.exports.update = (req, res) => {
               if (err1) {
                 return res.json(err1);
               }
-              return res.end();
+              return res.json({ message: 'Cisse code avec les pieds' });
             },
           );
         }

@@ -17,13 +17,15 @@ export const getEvaluations = () => {
           .then(response => response.json())
 }
 
-export const createCopy = (evaluationId, authorId) => {
+export const createCopy = (evaluationId, username) => {
   return fetch(`${BASE_URL}/papers`, {
-        headers: getAuthHeaders(),
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
         method: 'POST',
         body: JSON.stringify({
           evaluationId : evaluationId,
-          author: authorId
+          author: username
         })
     })
     .then(checkAuthResponse)
@@ -44,7 +46,7 @@ export const publishEvaluation = (id, publishState) => {
     }).then(checkAuthResponse)
 };
 
-export const createEvaluation = (name, author, group) => {
+export const createEvaluation = (name, author, promo) => {
   return fetch(`${BASE_URL}/evaluations`, {
         headers: getAuthHeaders({
           'Content-Type': 'application/json'
@@ -53,7 +55,7 @@ export const createEvaluation = (name, author, group) => {
         body: JSON.stringify({
           name : name,
           author: author,
-          groupClass: group
+          promo: promo
         })
     }).then(checkAuthResponse)
     .then(res => res.json())
@@ -114,16 +116,6 @@ export const updateCopy = (id, responses) => {
     }).then(checkAuthResponse)
 }
 
-
-export const getUser = () => {
-  const url = `${BASE_URL}/users/`;
-  return fetch(   url,
-                { headers: getAuthHeaders() }
-              )
-          .then(checkAuthResponse)
-          .then(response => response.json())
-}
-
 export const getPromos = () => {
   const url = 'https://linkapp.ebm.nymous.io/api/promos/listpromos'
   return fetch(
@@ -133,6 +125,60 @@ export const getPromos = () => {
               "Authorization": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJyb2xlIjoiZXR1ZGlhbnQiLCJub20iOiJyb290IiwicHJlbm9tIjoicm9vdCIsImVtYWlsIjoicm9vdEBldHVkaWFudC5mciIsImlhdCI6MTUyMTQwNjI2NX0.X9lTVE4dTi_1PUkojmpHWnJzM_fkrmv-VZPGjhLlV14"
             }
           })
+          .then(checkAuthResponse)
+          .then(response => response.json())
+}
+
+export const getAnswer = (evalId, questionId) => {
+  const url = `${BASE_URL}/evaluations/${evalId}/questions/${questionId}/responses`;
+  return fetch(url, { headers: getAuthHeaders() })
+          .then(checkAuthResponse)
+          .then(response => response.json())
+}
+
+export const createFeedback = (evaluationId, questionId, points, content) => {
+  return fetch(`${BASE_URL}/feedbacks`, {
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
+        method: 'POST',
+        body: JSON.stringify({
+          evaluationId : evaluationId,
+          questionId: questionId,
+          points: points,
+          content: content
+        })
+    })
+    .then(checkAuthResponse)
+    .then(res => res.json())
+}
+
+export const getFeedbacks = (evalId, questionId) => {
+  const url = `${BASE_URL}/evaluations/${evalId}/questions/${questionId}/feedback`;
+  return fetch(url, { headers: getAuthHeaders() })
+          .then(console.log(getAuthHeaders()))
+          .then(checkAuthResponse)
+          .then(response => response.json())
+}
+
+export const saveFeedBack = (feedbackId, answerId, paperId) => {
+  return fetch(`${BASE_URL}/papers/${paperId}/responses/${answerId}`, {
+        headers: getAuthHeaders({
+          'Content-Type': 'application/json'
+        }),
+        method: 'PUT',
+        body: JSON.stringify({
+          feedbackId : feedbackId,
+        })
+    })
+    .then(checkAuthResponse)
+    .then(res => res.json())
+}
+
+export const findCopy = (evaluationId) => {
+  const url = `${BASE_URL}/papers/byUser/${evaluationId}`;
+  return fetch(url, { headers: getAuthHeaders() })
+          .then(console.log(getAuthHeaders()))
           .then(checkAuthResponse)
           .then(response => response.json())
 }

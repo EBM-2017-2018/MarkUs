@@ -4,7 +4,7 @@ import { TableCell, TableRow } from 'material-ui/Table';
 
 const styles = {
   tableCell : {
-    textAlign: 'center'
+    textAlign: 'left'
   }
 };
 
@@ -23,7 +23,6 @@ class Question extends PureComponent {
       return(
         <TableRow key={this.state.id}>
           <TableCell style={styles.tableCell} >{this.state.content}</TableCell>
-          <TableCell style={styles.tableCell} >{this.state.points}</TableCell>
         </TableRow>
       )
   }

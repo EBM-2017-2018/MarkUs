@@ -3,20 +3,24 @@ import {withStyles} from 'material-ui';
 
 import Student from './Student';
 import Admin from './Admin';
-
-const user = JSON.parse(sessionStorage.getItem('user'));
+import { getUser } from "./UserManager";
 
 const style = {};
 
+
 class Home extends PureComponent {
+
+  user = getUser();
 
   render() {
     let content;
-    if (user.role === "administrateur" || user.role === "intervenant") {
+    console.log('kk', this.user)
+    if (this.user.role === "administrateur" || this.user.role === "intervenant") {
       content = <Admin />
-    }else if (user.role === "etudiant"){
+    }else if (this.user.role === "etudiant"){
       content = <Student />
     }
+
     return (
       <div>
         {content}

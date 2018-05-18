@@ -20,8 +20,8 @@ const styles = theme => ({
   content: {
     textAlign: 'left',
     paddingTop: theme.spacing.unit * 5,
-    marginLeft: 100,
-    marginRight: 100,
+    marginLeft: 50,
+    marginRight: 50,
   }
 });
 

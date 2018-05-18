@@ -31,7 +31,7 @@ module.exports.findOne = (req, res) => {
 };
 
 module.exports.create = (req, res) => {
-  const feedback = req.body;
+  const feedback = new Feedback(req.body);
   if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
     return feedback.save((err) => {
       if (err) {
@@ -52,6 +52,21 @@ module.exports.delete = (req, res) => {
           return res.json(err);
         }
         return res.json({ message: 'feedback supprimé' });
+      },
+    );
+  }
+  return res.json({ message: 'Access Denied' });
+};
+
+module.exports.deleteAll = (req, res) => {
+  if (req.user.role === 'intervenant' || req.user.role === 'administrateur') {
+    return Feedback.remove(
+      {},
+      (err) => {
+        if (err) {
+          return res.json(err);
+        }
+        return res.json({ message: 'feedbacks supprimé' });
       },
     );
   }
